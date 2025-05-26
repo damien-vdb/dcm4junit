@@ -1,0 +1,31 @@
+[versions]
+# Plugins
+kordamp = "0.54.0"
+jreleaser = "1.18.0"
+
+# Dependencies
+lombok = "1.18.38"
+junit = "5.10.0"
+dcm4che = "5.33.1"
+assertj = "3.27.3"
+
+[libraries]
+# Lombok
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# JUnit
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+
+# DCM4CHE
+dcm4che-core = { module = "org.dcm4che:dcm4che-core", version.ref = "dcm4che" }
+dcm4che-net = { module = "org.dcm4che:dcm4che-net", version.ref = "dcm4che" }
+dcm4che-tool-storescu = { module = "org.dcm4che.tool:dcm4che-tool-storescu", version.ref = "dcm4che" }
+
+# AssertJ
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+
+[plugins]
+kordamp = { id = "org.kordamp.gradle.java-project", version.ref = "kordamp" }
+jreleaser = { id = "org.jreleaser", version.ref = "jreleaser" }

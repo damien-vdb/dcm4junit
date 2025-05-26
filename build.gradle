@@ -1,0 +1,41 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    alias libs.plugins.kordamp
+    alias libs.plugins.jreleaser
+}
+
+dependencies {
+    // Platform BOMs
+    compileOnly platform(libs.junit.bom)
+    testImplementation platform(libs.junit.bom)
+
+    // Compile only dependencies
+    compileOnly libs.lombok
+    compileOnly libs.junit.jupiter.api
+
+    // Annotation processors
+    annotationProcessor libs.lombok
+
+    // Implementation dependencies
+    implementation libs.dcm4che.core
+
+    // Test dependencies
+    testImplementation libs.junit.jupiter
+    testImplementation libs.assertj.core
+
+    // Test annotation processors
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+}
+
+compileJava {
+    options.release = 11
+}
+
+test {
+    useJUnitPlatform()
+}
+
+apply from: "${rootProject.projectDir}/gradle/config.gradle"
+apply from: "${rootProject.projectDir}/gradle/jreleaser.gradle"

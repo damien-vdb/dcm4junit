@@ -1,0 +1,80 @@
+def stagingDir = 'build/staging-deploy'
+
+publishing {
+    repositories {
+        maven {
+            url = uri(stagingDir)
+        }
+    }
+}
+
+jreleaser {
+    catalog {
+        sbom {
+            syft {
+                active = 'ALWAYS'
+            }
+        }
+    }
+
+    signing {
+        active = 'RELEASE'
+        armored = true
+    }
+
+    release {
+        github {
+            enabled = true
+            repoOwner = 'damien-vdb'
+            overwrite = true
+            skipTag = false
+            skipRelease = false
+            sign = false
+            files = false
+            checksums = true
+            signatures = false
+            catalogs = true
+            draft = false
+
+            releaseNotes {
+                enabled = false
+            }
+
+            changelog {
+                enabled = true
+                links = true
+                formatted = 'ALWAYS'
+                preset = 'conventional-commits'
+
+                append {
+                    enabled = true
+                }
+            }
+        }
+    }
+
+
+    deploy {
+        maven {
+            github {
+                github {
+                    active = 'SNAPSHOT'
+                    url = 'https://maven.pkg.github.com/damien-vdb/dcm4junit'
+                    stagingRepository(stagingDir)
+                    snapshotSupported = true
+                    applyMavenCentralRules = true
+                    sign = false
+                }
+            }
+
+            mavenCentral {
+                mavenCentral {
+                    active = 'RELEASE'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository(stagingDir)
+                    applyMavenCentralRules = true
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+config {
+    docs {
+        javadoc {
+            autoLinks {
+                enabled = false
+            }
+        }
+    }
+    info {
+        name = rootProject.name
+        group = 'com.github.damien-vdb'
+        description = 'Utilities and assertions for DICOM test in Java'
+        inceptionYear = '2025'
+        vendor = 'damien-vdb'
+        people {
+            person {
+                id = 'damien-vdb'
+                name = 'damien-vdb'
+                roles = ['developer']
+            }
+        }
+
+        links {
+            website = 'https://github.com/damien-vdb/dcm4junit'
+            issueTracker = 'https://github.com/damien-vdb/dcm4junit/issues'
+            scm = 'https://github.com/damien-vdb/dcm4junit.git'
+        }
+
+        scm {
+            url = 'https://github.com/damien-vdb/dcm4junit'
+            connection = 'scm:git:https://github.com/damien-vdb/dcm4junit.git'
+            developerConnection = 'scm:git:git@github.com:damien-vdb/dcm4junit.git'
+        }
+    }
+
+    licensing {
+        enabled = false
+        licenses {
+            license {
+                licenseId = 'MIT'
+            }
+        }
+    }
+}
