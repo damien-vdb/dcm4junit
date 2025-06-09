@@ -29,7 +29,7 @@ Add the following dependency to your project:
 
 ```kotlin
 dependencies {
-    testImplementation("com.github.damienvdb:dcm4junit:0.1.0")
+    testImplementation("io.github.damien-vdb:dcm4junit:0.1.0")
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
 ```xml
 
 <dependency>
-    <groupId>com.github.damienvdb</groupId>
+    <groupId>io.github.damien-vdb</groupId>
     <artifactId>dcm4junit</artifactId>
     <version>0.1.0</version>
     <scope>test</scope>
@@ -113,7 +113,7 @@ void generateTestStudy() {
 
 ```bash
 # Clone the repository
-git clone https://github.com/damienvdb/dcm4junit.git
+git clone https://github.com/damien-vdb/dcm4junit.git
 cd dcm4junit
 
 # Build the project
