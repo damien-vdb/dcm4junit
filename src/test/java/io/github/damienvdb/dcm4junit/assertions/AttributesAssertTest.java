@@ -1,17 +1,17 @@
-package com.github.damienvdb.dcm4junit.assertions;
+package io.github.damienvdb.dcm4junit.assertions;
 
-import com.github.damienvdb.dcm4junit.dicom.DicomField;
-import com.github.damienvdb.dcm4junit.dicom.DicomTag;
-import com.github.damienvdb.dcm4junit.utils.Faker;
+import io.github.damienvdb.dcm4junit.dicom.DicomField;
+import io.github.damienvdb.dcm4junit.dicom.DicomTag;
+import io.github.damienvdb.dcm4junit.utils.Faker;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.ItemPointer;
 import org.dcm4che3.data.VR;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.github.damienvdb.dcm4junit.assertions.Assertions.assertThat;
-import static com.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
-import static com.github.damienvdb.dcm4junit.utils.AttributesUtils.at;
+import static io.github.damienvdb.dcm4junit.assertions.Assertions.assertThat;
+import static io.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
+import static io.github.damienvdb.dcm4junit.utils.AttributesUtils.at;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.dcm4che3.data.Tag.*;
 

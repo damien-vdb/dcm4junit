@@ -1,10 +1,10 @@
-package com.github.damienvdb.dcm4junit.assertions;
+package io.github.damienvdb.dcm4junit.assertions;
 
-import com.github.damienvdb.dcm4junit.dicom.DicomField;
-import com.github.damienvdb.dcm4junit.dicom.DicomTag;
-import com.github.damienvdb.dcm4junit.utils.AttributesUtils;
-import com.github.damienvdb.dcm4junit.utils.visitor.SearchAllVisitor;
-import com.github.damienvdb.dcm4junit.utils.visitor.SearchOneVisitor;
+import io.github.damienvdb.dcm4junit.dicom.DicomField;
+import io.github.damienvdb.dcm4junit.dicom.DicomTag;
+import io.github.damienvdb.dcm4junit.utils.AttributesUtils;
+import io.github.damienvdb.dcm4junit.utils.visitor.SearchAllVisitor;
+import io.github.damienvdb.dcm4junit.utils.visitor.SearchOneVisitor;
 import lombok.SneakyThrows;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Value;

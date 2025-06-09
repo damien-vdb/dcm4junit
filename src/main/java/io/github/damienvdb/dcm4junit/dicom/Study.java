@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.dicom;
+package io.github.damienvdb.dcm4junit.dicom;
 
-import com.github.damienvdb.dcm4junit.utils.Faker;
+import io.github.damienvdb.dcm4junit.utils.Faker;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

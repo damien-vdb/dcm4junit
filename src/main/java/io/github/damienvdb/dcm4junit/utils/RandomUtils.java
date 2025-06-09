@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.utils;
+package io.github.damienvdb.dcm4junit.utils;
 
 import java.time.LocalTime;
 import java.util.Calendar;

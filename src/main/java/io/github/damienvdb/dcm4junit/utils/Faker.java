@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.utils;
+package io.github.damienvdb.dcm4junit.utils;
 
 import lombok.experimental.UtilityClass;
 import org.dcm4che3.util.DateUtils;
@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.github.damienvdb.dcm4junit.utils.RandomUtils.*;
+import static io.github.damienvdb.dcm4junit.utils.RandomUtils.*;
 
 @UtilityClass
 public class Faker {

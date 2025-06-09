@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.assertions;
+package io.github.damienvdb.dcm4junit.assertions;
 
-import com.github.damienvdb.dcm4junit.utils.AttributesUtils;
+import io.github.damienvdb.dcm4junit.utils.AttributesUtils;
 import lombok.SneakyThrows;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Sequence;

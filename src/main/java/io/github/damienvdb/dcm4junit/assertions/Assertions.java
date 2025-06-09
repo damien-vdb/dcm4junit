@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.assertions;
+package io.github.damienvdb.dcm4junit.assertions;
 
 import org.dcm4che3.data.Attributes;
 

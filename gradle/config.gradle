@@ -8,7 +8,7 @@ config {
     }
     info {
         name = rootProject.name
-        group = 'com.github.damien-vdb'
+        group = 'io.github.damien-vdb'
         description = 'Utilities and assertions for DICOM test in Java'
         inceptionYear = '2025'
         vendor = 'damien-vdb'

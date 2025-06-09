@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dicom;
+package io.github.damienvdb.dcm4junit.dicom;
 
 import lombok.RequiredArgsConstructor;
 import org.dcm4che3.data.Attributes;

@@ -55,7 +55,7 @@ jobs:
       - name: Set version and release
         run: |
           # Update version in gradle.properties
-          sed -i "s/^version=.*/^version=${{ github.event.inputs.release-version }}/" gradle.properties
+          sed -i "s/^version=.*/version=${{ github.event.inputs.release-version }}/" gradle.properties
           
           # Build and publish to local staging repository
           ./gradlew clean build publish
@@ -71,7 +71,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
-          JRELEASER_GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         run: |
           ./gradlew jreleaserFullRelease
 

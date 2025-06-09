@@ -1,7 +1,7 @@
-package com.github.damienvdb.dcm4junit.utils.visitor;
+package io.github.damienvdb.dcm4junit.utils.visitor;
 
-import com.github.damienvdb.dcm4junit.dicom.DicomField;
-import com.github.damienvdb.dcm4junit.dicom.DicomTag;
+import io.github.damienvdb.dcm4junit.dicom.DicomField;
+import io.github.damienvdb.dcm4junit.dicom.DicomTag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.dcm4che3.data.Attributes;

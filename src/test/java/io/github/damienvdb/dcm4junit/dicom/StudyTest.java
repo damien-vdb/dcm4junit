@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.dicom;
+package io.github.damienvdb.dcm4junit.dicom;
 
-import com.github.damienvdb.dcm4junit.assertions.Assertions;
+import io.github.damienvdb.dcm4junit.assertions.Assertions;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.junit.jupiter.api.Test;
