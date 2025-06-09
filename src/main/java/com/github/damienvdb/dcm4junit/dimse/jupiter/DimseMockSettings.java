@@ -1,0 +1,14 @@
+package com.github.damienvdb.dcm4junit.dimse.jupiter;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@ExtendWith(DimseMockExtension.class)
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+public @interface DimseMockSettings {
+    boolean perTestSuite() default false;
+}
