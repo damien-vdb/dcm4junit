@@ -13,6 +13,7 @@ dependencies {
     // Compile only dependencies
     compileOnly libs.lombok
     compileOnly libs.junit.jupiter.api
+    compileOnly libs.dcm4che.net
 
     // Annotation processors
     annotationProcessor libs.lombok
@@ -23,6 +24,8 @@ dependencies {
     // Test dependencies
     testImplementation libs.junit.jupiter
     testImplementation libs.assertj.core
+    testImplementation libs.dcm4che.net
+    testImplementation libs.dcm4che.tool.storescu
 
     // Test annotation processors
     testCompileOnly libs.lombok
