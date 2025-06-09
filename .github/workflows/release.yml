@@ -78,7 +78,7 @@ jobs:
       - name: Update to next development version
         run: |
           # Update to next development version
-          sed -i "s/^version=.*/^version=${{ github.event.inputs.next-version }}/" gradle.properties
+          sed -i "s/^version=.*/version=${{ github.event.inputs.next-version }}/" gradle.properties
           
           # Commit the version update
           git add gradle.properties
