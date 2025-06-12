@@ -1,15 +1,10 @@
 package io.github.damienvdb.dcm4junit.dicom;
 
 import lombok.RequiredArgsConstructor;
-import org.dcm4che3.data.Attributes;
-import org.dcm4che3.data.ItemPointer;
-import org.dcm4che3.data.Sequence;
-import org.dcm4che3.data.VR;
-import org.dcm4che3.util.DateUtils;
+import org.dcm4che3.data.*;
 
-import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import static org.dcm4che3.data.ElementDictionary.getStandardElementDictionary;
 
@@ -49,8 +44,23 @@ public class AttributesBuilder {
         return this;
     }
 
+    public AttributesBuilder setBytes(int tag, byte[] value) {
+        attributes.setBytes(tag, vrOf(tag), value);
+        return this;
+    }
+
     public AttributesBuilder setString(int tag, String value) {
         attributes.setString(tag, vrOf(tag), value);
+        return this;
+    }
+
+    public AttributesBuilder setDouble(int tag, double... value) {
+        attributes.setDouble(tag, vrOf(tag), value);
+        return this;
+    }
+
+    public AttributesBuilder setFloat(int tag, float... value) {
+        attributes.setFloat(tag, vrOf(tag), value);
         return this;
     }
 
@@ -59,17 +69,22 @@ public class AttributesBuilder {
         return this;
     }
 
+    public AttributesBuilder setLong(int tag, long... value) {
+        attributes.setLong(tag, vrOf(tag), value);
+        return this;
+    }
+
     public AttributesBuilder setNull(int tag) {
         attributes.setNull(tag, vrOf(tag));
         return this;
     }
 
-    public AttributesBuilder setDateTime(int dateTag, int timeTag, Instant instant) {
-        Date date = Date.from(instant);
-        String dateValue = DateUtils.formatDA(TimeZone.getDefault(), date);
-        String timeValue = DateUtils.formatTM(TimeZone.getDefault(), date);
-        this.setString(dateTag, dateValue);
-        this.setString(timeTag, timeValue);
+    public AttributesBuilder setDateTime(long dateTimeTag, Date date) {
+        return setDateTime(dateTimeTag, date, Calendar.SECOND);
+    }
+
+    public AttributesBuilder setDateTime(long dateTimeTag, Date date, int calendarPrecision) {
+        attributes.setDate(dateTimeTag, new DatePrecision(calendarPrecision), date);
         return this;
     }
 

@@ -254,6 +254,20 @@ public abstract class AttributesAssert<SELF extends AttributesAssert<SELF>> {
      * Asserts that the attributes contain a string value for the specified tag
      * that satisfies the given predicate.
      *
+     * @param tag       the tag to check for a string value
+     * @param predicate the predicate to apply to the string value
+     * @return {@code this} assertion object.
+     * @throws AssertionError if the tag is not found in the attributes or the
+     *                        value does not satisfy the predicate
+     */
+    public SELF hasStringSatisfying(int tag, Predicate<String> predicate) {
+        return this.hasStringSatisfying(tag, predicate, "match predicate");
+    }
+
+    /**
+     * Asserts that the attributes contain a string value for the specified tag
+     * that satisfies the given predicate.
+     *
      * @param tag         the tag to check for a string value
      * @param predicate   the predicate to apply to the string value
      * @param expectation a description of what the predicate checks
