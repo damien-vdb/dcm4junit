@@ -11,4 +11,10 @@ import java.lang.annotation.RetentionPolicy;
 @Inherited
 public @interface DimseMockSettings {
     boolean perTestSuite() default false;
+
+    String hostname() default "localhost";
+
+    int port() default 0;
+
+    String aet() default "storescp";
 }

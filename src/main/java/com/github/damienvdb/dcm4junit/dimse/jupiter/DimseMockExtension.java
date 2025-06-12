@@ -113,8 +113,7 @@ public class DimseMockExtension implements ParameterResolver, BeforeEachCallback
      * @return a new DimseMock instance
      */
     protected DimseMock createNewMock(Optional<DimseMockSettings> settings) {
-        // TODO: Configure the mock based on settings if needed
-        DimseMock mock = new DimseMock();
+        DimseMock mock = new DimseMock(settings);
         mock.start();
         Runtime.getRuntime().addShutdownHook(new Thread(mock::stop));
         return mock;
