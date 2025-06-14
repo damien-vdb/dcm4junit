@@ -1,5 +1,6 @@
 package io.github.damienvdb.dcm4junit.dicom;
 
+import io.github.damienvdb.dcm4junit.utils.AttributesUtils;
 import lombok.RequiredArgsConstructor;
 import org.dcm4che3.data.*;
 
@@ -39,6 +40,22 @@ public class AttributesBuilder {
         return this;
     }
 
+    public AttributesBuilder remove(String path) {
+        ItemPointer[] pointers = AttributesUtils.pointers(path);
+        ItemPointer lastPointer = pointers[pointers.length - 1];
+        Attributes targetAttributes;
+        if (pointers.length > 1) {
+            ItemPointer[] parents = new ItemPointer[pointers.length - 1];
+            System.arraycopy(pointers, 0, parents, 0, parents.length);
+            targetAttributes = attributes.getNestedDataset(parents);
+        } else {
+            targetAttributes = attributes;
+        }
+        targetAttributes
+                .remove(lastPointer.privateCreator, lastPointer.sequenceTag);
+        return this;
+    }
+
     public AttributesBuilder remove(ItemPointer[] itemPointers, int tag) {
         attributes.getNestedDataset(itemPointers).remove(tag);
         return this;
@@ -49,7 +66,7 @@ public class AttributesBuilder {
         return this;
     }
 
-    public AttributesBuilder setString(int tag, String value) {
+    public AttributesBuilder setString(int tag, String... value) {
         attributes.setString(tag, vrOf(tag), value);
         return this;
     }
