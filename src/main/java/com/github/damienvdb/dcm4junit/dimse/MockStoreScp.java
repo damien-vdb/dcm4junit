@@ -1,7 +1,6 @@
 package com.github.damienvdb.dcm4junit.dimse;
 
 import lombok.Builder;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
@@ -16,7 +15,9 @@ import org.dcm4che3.net.service.DicomServiceException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 @Slf4j
 @Builder
@@ -24,8 +25,17 @@ public class MockStoreScp extends BasicCStoreSCP {
 
     private final int status;
     private final File storageDir;
-    @Getter
     private final LinkedHashMap<Attributes, File> storedFiles = new LinkedHashMap<>();
+
+
+    public List<File> getStoredFiles() {
+        return new ArrayList<>(this.storedFiles.values());
+    }
+
+    public List<Attributes> getFmis() {
+        return new ArrayList<>(this.storedFiles.keySet());
+    }
+
 
     @Override
     protected void store(Association as, PresentationContext pc,

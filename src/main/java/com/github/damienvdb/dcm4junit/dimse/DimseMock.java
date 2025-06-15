@@ -1,21 +1,17 @@
 package com.github.damienvdb.dcm4junit.dimse;
 
+import com.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
+import com.github.damienvdb.dcm4junit.dimse.jupiter.CStoreScp;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.Delegate;
-import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.*;
-import org.dcm4che3.net.service.DicomService;
 import org.dcm4che3.net.service.DicomServiceRegistry;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,26 +26,38 @@ public class DimseMock implements Closeable {
     private final Connection connection;
     private final Device device;
     private final ApplicationEntity ae;
-    @Delegate(excludes = {AssociationMonitor.class})
-    private final FakeAssociationMonitor associationMonitor;
-    private final MockStoreScp mockStoreScp;
+    @Getter
+    private final String hostname;
     @Getter
     private int port;
+    @Delegate(excludes = {AssociationMonitor.class})
+    private final FakeAssociationMonitor associationMonitor;
+    private final Optional<MockStoreScp> mockStoreScp;
+    private final Optional<MockFindScp> mockFindScp;
     private ExecutorService executorService;
     private ScheduledExecutorService scheduledExecutorService;
 
     public DimseMock(Optional<DimseMockSettings> settings) {
-        device = new Device("mockscp");
-        mockStoreScp = MockStoreScp.builder().build();
-        device.setDimseRQHandler(createServiceRegistry(Collections.singletonList(mockStoreScp)));
         port = settings.map(DimseMockSettings::port).orElse(0);
+        hostname = settings.map(DimseMockSettings::hostname).orElse(DEFAULT_HOSTNAME);
+        String aet = settings.map(DimseMockSettings::aet).orElse(DEFAULT_AET);
 
+        mockStoreScp = settings.map(DimseMockSettings::cstoreScp)
+                .filter(CStoreScp::enabled)
+                .map(cstoreScp -> MockStoreScp.builder().build());
+
+        mockFindScp = settings.map(DimseMockSettings::cfindScp)
+                .filter(CFindScp::enabled)
+                .map(cfindScp -> new MockFindScp(cfindScp));
+
+        device = new Device("mockscp");
         connection = new Connection();
-        connection.setHostname(settings.map(DimseMockSettings::hostname).orElse(DEFAULT_HOSTNAME));
+        connection.setHostname(hostname);
         device.addConnection(connection);
         associationMonitor = new FakeAssociationMonitor();
+        device.setDimseRQHandler(createServiceRegistry());
         device.setAssociationMonitor(associationMonitor);
-        ae = new ApplicationEntity(settings.map(DimseMockSettings::aet).orElse(DEFAULT_AET));
+        ae = new ApplicationEntity(aet);
         configureTransferCapability(ae);
         device.addApplicationEntity(ae);
         ae.setAssociationAcceptor(true);
@@ -64,9 +72,10 @@ public class DimseMock implements Closeable {
                 new TransferCapability(null, "*", TransferCapability.Role.SCP, "*"));
     }
 
-    private DicomServiceRegistry createServiceRegistry(List<DicomService> services) {
+    private DicomServiceRegistry createServiceRegistry() {
         DicomServiceRegistry serviceRegistry = new DicomServiceRegistry();
-        services.forEach(serviceRegistry::addDicomService);
+        mockStoreScp.ifPresent(serviceRegistry::addDicomService);
+        mockFindScp.ifPresent(serviceRegistry::addDicomService);
         return serviceRegistry;
     }
 
@@ -113,26 +122,20 @@ public class DimseMock implements Closeable {
 
     public void reset() {
         associationMonitor.clear();
-        mockStoreScp.clear();
+        mockStoreScp.ifPresent(MockStoreScp::clear);
+        mockFindScp.ifPresent(MockFindScp::clear);
     }
 
     public String getAeTitle() {
         return ae.getAETitle();
     }
 
-    /**
-     * TODO: Configure
-     */
-    public String getHost() {
-        return DEFAULT_HOSTNAME;
+    public MockStoreScp getCStoreScp() {
+        return mockStoreScp.orElseThrow(() -> new IllegalStateException("Mock C-STORE SCP is not enabled"));
     }
 
-    public List<File> getStoredFiles() {
-        return new ArrayList<>(mockStoreScp.getStoredFiles().values());
-    }
-
-    public List<Attributes> getFmis() {
-        return new ArrayList<>(mockStoreScp.getStoredFiles().keySet());
+    public MockFindScp getCFindScp() {
+        return mockFindScp.orElseThrow(() -> new IllegalStateException("Mock C-FIND SCP is not enabled"));
     }
 
 }

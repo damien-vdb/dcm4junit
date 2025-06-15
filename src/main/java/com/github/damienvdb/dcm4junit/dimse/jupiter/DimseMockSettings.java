@@ -17,4 +17,8 @@ public @interface DimseMockSettings {
     int port() default 0;
 
     String aet() default "storescp";
+
+    CStoreScp cstoreScp() default @CStoreScp;
+
+    CFindScp cfindScp() default @CFindScp;
 }

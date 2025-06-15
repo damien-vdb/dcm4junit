@@ -26,6 +26,7 @@ dependencies {
     testImplementation libs.assertj.core
     testImplementation libs.dcm4che.net
     testImplementation libs.dcm4che.tool.storescu
+    testImplementation libs.dcm4che.tool.findscu
 
     // Test annotation processors
     testCompileOnly libs.lombok
