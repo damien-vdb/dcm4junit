@@ -1,33 +1,22 @@
-package com.github.damienvdb.dcm4junit.dimse;
+package com.github.damienvdb.dcm4junit.dimse.cfind;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.dcm4che3.data.Attributes;
-import org.dcm4che3.data.Tag;
 import org.dcm4che3.data.UID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class MockFindScpRegistry {
+class StubRegistry {
 
     public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelFind;
 
     private final List<Stub> stubs = new ArrayList<>();
-
-    public void put(Predicate<String> affectedSopClassUidPredicate, Predicate<Attributes> expectedKeys, List<Attributes> responses) {
-        register(Stub.builder()
-                .affectedSOPClassUID(affectedSopClassUidPredicate)
-                .expectedKeys(expectedKeys)
-                .responses(responses)
-                .build());
-    }
 
     public void register(Stub stub) {
         this.stubs.add(stub);
@@ -45,7 +34,7 @@ class MockFindScpRegistry {
             return emptyList();
         }
         if (responsesMatched.size() == 1) {
-            return responsesMatched.get(0).responses;
+            return responsesMatched.get(0).getResponses();
         }
 
         throw new IllegalStateException("More than one stub matched for " + keys);
@@ -55,17 +44,4 @@ class MockFindScpRegistry {
         this.stubs.clear();
     }
 
-
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-    @Builder(access = AccessLevel.PACKAGE)
-    static class Stub {
-        @Builder.Default
-        private final Predicate<String> affectedSOPClassUID = Predicate.isEqual(DEFAULT_SOPCLASS);
-        private final Predicate<Attributes> expectedKeys;
-        private final List<Attributes> responses;
-
-        public boolean test(Attributes rq, Attributes keys) {
-            return affectedSOPClassUID.test(rq.getString(Tag.AffectedSOPClassUID)) && expectedKeys.test(keys);
-        }
-    }
 }

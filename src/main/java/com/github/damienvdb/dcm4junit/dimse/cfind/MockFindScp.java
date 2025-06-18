@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse;
+package com.github.damienvdb.dcm4junit.dimse.cfind;
 
 import com.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.github.damienvdb.dcm4junit.dimse.MockFindScpRegistry.Stub;
 import static java.util.function.Predicate.isEqual;
 
 /**
@@ -25,14 +24,14 @@ import static java.util.function.Predicate.isEqual;
 @Slf4j
 public class MockFindScp extends BasicCFindSCP {
 
-    private final MockFindScpRegistry registry = new MockFindScpRegistry();
+    private final StubRegistry registry = new StubRegistry();
 
     public MockFindScp(CFindScp cfindScp) {
         super(cfindScp.sopClasses());
     }
 
     public OngoingCFindStub stubFor(Attributes keys) {
-        return new OngoingCFindStub(Stub.builder().expectedKeys(isEqual(keys)), registry);
+        return new OngoingCFindStub(isEqual(keys), registry);
     }
 
     /**
@@ -43,7 +42,7 @@ public class MockFindScp extends BasicCFindSCP {
      * @see com.github.damienvdb.dcm4junit.assertions.AttributesAssert#toPredicate(java.util.function.Function) to generate predicates from assertions.
      */
     public OngoingCFindStub stubFor(Predicate<Attributes> predicate) {
-        return new OngoingCFindStub(Stub.builder().expectedKeys(predicate), registry);
+        return new OngoingCFindStub(predicate, registry);
     }
 
 

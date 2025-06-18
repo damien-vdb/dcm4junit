@@ -12,6 +12,8 @@ public @interface CFindScp {
     boolean enabled() default true;
 
     String[] sopClasses() default {
-            UID.StudyRootQueryRetrieveInformationModelFind
+            UID.StudyRootQueryRetrieveInformationModelFind,
+            UID.PatientRootQueryRetrieveInformationModelFind,
+            UID.PatientStudyOnlyQueryRetrieveInformationModelFind
     };
 }

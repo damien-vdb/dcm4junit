@@ -14,7 +14,7 @@ class FakeAssociationMonitor implements AssociationMonitor {
     private final List<Association> associationsEstablished = new ArrayList<>();
     private final List<Association> associationsFailed = new ArrayList<>();
     private final List<Association> associationsRejected = new ArrayList<>();
-    private final List<Association> associationsAccepted = new ArrayList<Association>();
+    private final List<Association> associationsAccepted = new ArrayList<>();
 
     public void clear() {
         associationsEstablished.clear();

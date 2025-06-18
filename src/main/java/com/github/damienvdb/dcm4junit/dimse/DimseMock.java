@@ -1,5 +1,6 @@
 package com.github.damienvdb.dcm4junit.dimse;
 
+import com.github.damienvdb.dcm4junit.dimse.cfind.MockFindScp;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.CStoreScp;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
