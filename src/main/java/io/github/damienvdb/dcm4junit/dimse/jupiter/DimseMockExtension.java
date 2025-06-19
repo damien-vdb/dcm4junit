@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.dimse.jupiter;
+package io.github.damienvdb.dcm4junit.dimse.jupiter;
 
-import com.github.damienvdb.dcm4junit.dimse.DimseMock;
+import io.github.damienvdb.dcm4junit.dimse.DimseMock;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
@@ -96,6 +96,7 @@ public class DimseMockExtension implements ParameterResolver, BeforeEachCallback
             // Create a new mock for each test if not in per-test-suite mode
             mock = (customMock != null) ? customMock : createNewMock(retrieveAnnotationFromTestClass(context));
         }
+        mock.reset();
     }
 
     @Override

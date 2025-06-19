@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse;
+package io.github.damienvdb.dcm4junit.dimse;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse.cfind;
+package io.github.damienvdb.dcm4junit.dimse.cfind;
 
 import lombok.AccessLevel;
 import lombok.Builder;
