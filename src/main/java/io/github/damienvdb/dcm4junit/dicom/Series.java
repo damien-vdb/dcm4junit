@@ -25,6 +25,8 @@ public class Series {
     @Builder.Default
     private String modality = Faker.modality();
     @Builder.Default
+    private String sopClassUID = org.dcm4che3.data.UID.ComputedRadiographyImageStorage;
+    @Builder.Default
     private int instancesCount = 1;
     @Singular(value = "customize")
     private List<Consumer<Attributes>> customizers;
@@ -41,6 +43,7 @@ public class Series {
         return IntStream.range(1, instancesCount + 1)
                 .mapToObj(i -> AttributesBuilder.builder(seriesBase)
                         .setString(SOPInstanceUID, Faker.uid())
+                        .setString(SOPClassUID, sopClassUID)
                         .setInt(InstanceNumber, i)
                         .build()
                 );

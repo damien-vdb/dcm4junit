@@ -13,7 +13,10 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static io.github.damienvdb.dcm4junit.assertions.Assertions.assertThat;
 
 /**
  * TODO:
@@ -27,6 +30,17 @@ public abstract class AttributesAssert<SELF extends AttributesAssert<SELF>> {
     final Attributes actual;
     final SELF myself;
     int[] tagsToIgnore;
+
+    public static Predicate<Attributes> toPredicate(Function<RecursiveAttributesAssert, AttributesAssert<?>> assertionConsumer) {
+        return attrs -> {
+            try {
+                assertionConsumer.apply(assertThat(attrs));
+                return true;
+            } catch (AssertionError e) {
+                return false;
+            }
+        };
+    }
 
     public AttributesAssert(Attributes actual, Class<SELF> selfType, int[] tagsToIgnore) {
         this.actual = actual;

@@ -50,24 +50,53 @@ dependencies {
 ### Using the DIMSE Mock Server
 
 ```java
-
 @ExtendWith(DimseMockExtension.class)
 class MyDicomTest {
 
     @Test
-    void testDicomStore(DimseMock mock) {
-        // Test code that interacts with the mock DICOM server
+    void cstore(DimseMock mock) {
+
+        // Run your DICOM client
         String[] args = {
                 "-b", "storescu",
                 "-c", mock.getAeTitle() + "@" + mock.getHost() + ":" + mock.getPort(),
                 "test.dcm"
         };
-
-        // Run your DICOM client
         StoreSCU.main(args);
 
         // Verify the mock received the expected DICOM file
         assertThat(mock.getStoredFiles()).hasSize(1);
+    }
+
+    @Test
+    void cfind(DimseMock mock) {
+
+        var query = builder()
+                .setString(Tag.QueryRetrieveLevel, "STUDY")
+                .setString(Tag.PatientID, "PID")
+                .setString(Tag.StudyInstanceUID, "1.2.3.4.5")
+                .setNull(Tag.StudyDate)
+                .build();
+        var response = builder(QUERY)
+                .setString(Tag.StudyDate, "20250101")
+                .build();
+
+        // Setup the stub
+        mock.getCFindScp()
+                .stubFor(query)
+                .withAffectedSopClassUid(UID.StudyRootQueryRetrieveInformationModelFind)
+                .willReturn(response);
+
+        // Run your DICOM client
+        String[] args = new String[]{
+                "-b", "findscu",
+                "-c", mock.getAeTitle() + "@" + mock.getHostname() + ":" + mock.getPort(),
+                "-L", "STUDY",
+                "-m", "PatientID=" + query.getString(Tag.PatientID),
+                "-m", "StudyInstanceUID=" + query.getString(Tag.StudyInstanceUID),
+                "--out-dir", "/tmp"
+        };
+        FindSCU.main(args);
     }
 }
 ```
