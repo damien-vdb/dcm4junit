@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.dimse.jupiter;
+package io.github.damienvdb.dcm4junit.dimse.jupiter;
 
-import com.github.damienvdb.dcm4junit.dimse.DimseMock;
+import io.github.damienvdb.dcm4junit.dimse.DimseMock;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 

@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.dimse.cfind;
+package io.github.damienvdb.dcm4junit.dimse.cfind;
 
-import com.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
+import io.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
 import lombok.extern.slf4j.Slf4j;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.Association;

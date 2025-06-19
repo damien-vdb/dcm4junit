@@ -1,9 +1,9 @@
-package com.github.damienvdb.dcm4junit.dimse;
+package io.github.damienvdb.dcm4junit.dimse;
 
-import com.github.damienvdb.dcm4junit.dimse.cfind.MockFindScp;
-import com.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
-import com.github.damienvdb.dcm4junit.dimse.jupiter.CStoreScp;
-import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
+import io.github.damienvdb.dcm4junit.dimse.cfind.MockFindScp;
+import io.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
+import io.github.damienvdb.dcm4junit.dimse.jupiter.CStoreScp;
+import io.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.dcm4che3.net.*;

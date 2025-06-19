@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.utilities;
+package io.github.damienvdb.dcm4junit.utilities;
 
-import com.github.damienvdb.dcm4junit.dimse.DimseMock;
+import io.github.damienvdb.dcm4junit.dimse.DimseMock;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.SneakyThrows;

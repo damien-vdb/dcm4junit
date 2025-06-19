@@ -1,8 +1,8 @@
-package com.github.damienvdb.dcm4junit.dimse.cfind;
+package io.github.damienvdb.dcm4junit.dimse.cfind;
 
-import com.github.damienvdb.dcm4junit.dimse.DimseMock;
-import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
-import com.github.damienvdb.dcm4junit.utilities.FindScu;
+import io.github.damienvdb.dcm4junit.dimse.DimseMock;
+import io.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
+import io.github.damienvdb.dcm4junit.utilities.FindScu;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.data.UID;

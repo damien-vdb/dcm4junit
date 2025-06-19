@@ -1,6 +1,6 @@
-package com.github.damienvdb.dcm4junit.dimse.cfind;
+package io.github.damienvdb.dcm4junit.dimse.cfind;
 
-import com.github.damienvdb.dcm4junit.dimse.cfind.Stub.StubBuilder;
+import io.github.damienvdb.dcm4junit.dimse.cfind.Stub.StubBuilder;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.service.DicomServiceException;
 

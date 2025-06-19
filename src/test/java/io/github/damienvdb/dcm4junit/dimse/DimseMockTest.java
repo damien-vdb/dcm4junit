@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse;
+package io.github.damienvdb.dcm4junit.dimse;
 
 import org.assertj.core.util.Closeables;
 import org.junit.jupiter.api.Test;

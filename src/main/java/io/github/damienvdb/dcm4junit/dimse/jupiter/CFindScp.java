@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse.jupiter;
+package io.github.damienvdb.dcm4junit.dimse.jupiter;
 
 import org.dcm4che3.data.UID;
 

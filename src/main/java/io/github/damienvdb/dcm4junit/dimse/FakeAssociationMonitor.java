@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse;
+package io.github.damienvdb.dcm4junit.dimse;
 
 import lombok.Getter;
 import org.dcm4che3.net.Association;

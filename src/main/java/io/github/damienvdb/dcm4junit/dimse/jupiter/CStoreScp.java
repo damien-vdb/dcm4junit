@@ -1,4 +1,4 @@
-package com.github.damienvdb.dcm4junit.dimse.jupiter;
+package io.github.damienvdb.dcm4junit.dimse.jupiter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
