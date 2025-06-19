@@ -2,6 +2,7 @@ package com.github.damienvdb.dcm4junit.dimse.cfind;
 
 import com.github.damienvdb.dcm4junit.dimse.cfind.Stub.StubBuilder;
 import org.dcm4che3.data.Attributes;
+import org.dcm4che3.net.service.DicomServiceException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,5 +34,9 @@ public class OngoingCFindStub {
                 .collect(Collectors.toList());
 
         this.registry.register(builder.responses(responses).build());
+    }
+
+    public void willThrow(DicomServiceException e) {
+        this.registry.register(builder.exception(e).build());
     }
 }

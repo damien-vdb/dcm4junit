@@ -7,6 +7,8 @@ import com.github.damienvdb.dcm4junit.utilities.FindScu;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.data.UID;
+import org.dcm4che3.net.Status;
+import org.dcm4che3.net.service.DicomServiceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import static com.github.damienvdb.dcm4junit.assertions.AttributesAssert.toPredicate;
 import static com.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(DimseMockExtension.class)
 @DimseMockSettings(aet = "MockFindScpTest")
@@ -98,5 +101,17 @@ public class MockFindScpTest {
 
         assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .isEmpty();
+    }
+
+    @Test
+    void findscp_aborts_on_error(DimseMock mock) {
+
+        mock.getCFindScp()
+                .stubFor(QUERY)
+                .willThrow(new DicomServiceException(Status.OutOfResources, "out of resources"));
+
+        assertThatThrownBy(() -> query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+                .isInstanceOf(DicomServiceException.class)
+                .hasMessage("out of resources");
     }
 }

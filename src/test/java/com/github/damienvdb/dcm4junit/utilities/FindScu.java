@@ -4,9 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.dcm4che3.data.Attributes;
+import org.dcm4che3.data.Tag;
 import org.dcm4che3.net.*;
 import org.dcm4che3.net.pdu.AAssociateRQ;
 import org.dcm4che3.net.pdu.PresentationContext;
+import org.dcm4che3.net.service.DicomServiceException;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -50,6 +52,14 @@ public class FindScu implements Closeable {
 
     }
 
+    /**
+     * Simple C-FIND scu.
+     *
+     * @param abstractSyntax Affected SOP Class UID
+     * @param keys           Dataset
+     * @return List of datasets
+     * @throws DicomServiceException in case of error
+     */
     @SneakyThrows
     public List<Attributes> query(String abstractSyntax, Attributes keys) {
 
@@ -65,6 +75,10 @@ public class FindScu implements Closeable {
                     Integer.MAX_VALUE);
             List<Attributes> results = new ArrayList<>();
             while (rsp.next()) {
+                var status = rsp.getCommand().getInt(Tag.Status, 0);
+                if (!Status.isPending(status) && status != Status.Success) {
+                    throw new DicomServiceException(status, rsp.getCommand().getString(Tag.ErrorComment));
+                }
                 Optional.ofNullable(rsp.getDataset()).ifPresent(results::add);
             }
             return results;

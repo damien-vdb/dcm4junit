@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.UID;
+import org.dcm4che3.net.service.DicomServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ class StubRegistry {
         return stubs.isEmpty();
     }
 
-    public List<Attributes> get(Attributes rq, Attributes keys) {
+    public List<Attributes> get(Attributes rq, Attributes keys) throws DicomServiceException {
         List<Stub> responsesMatched = stubs.stream()
                 .filter(s -> s.test(rq, keys))
                 .collect(Collectors.toList());
@@ -34,7 +35,7 @@ class StubRegistry {
             return emptyList();
         }
         if (responsesMatched.size() == 1) {
-            return responsesMatched.get(0).getResponses();
+            return responsesMatched.get(0).apply();
         }
 
         throw new IllegalStateException("More than one stub matched for " + keys);
