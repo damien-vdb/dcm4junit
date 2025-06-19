@@ -4,6 +4,7 @@ import com.github.damienvdb.dcm4junit.dimse.cfind.Stub.StubBuilder;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.service.DicomServiceException;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,11 @@ public class OngoingCFindStub {
 
     public OngoingCFindStub withAffectedSopClassUid(String affectedSopClassUid) {
         this.builder.affectedSOPClassUID(isEqual(affectedSopClassUid));
+        return this;
+    }
+
+    public OngoingCFindStub withDelay(Duration delay) {
+        this.builder.delay(delay);
         return this;
     }
 

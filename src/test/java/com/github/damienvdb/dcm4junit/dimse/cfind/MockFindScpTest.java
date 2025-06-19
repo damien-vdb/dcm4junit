@@ -12,7 +12,9 @@ import org.dcm4che3.net.service.DicomServiceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static com.github.damienvdb.dcm4junit.assertions.AttributesAssert.toPredicate;
 import static com.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
@@ -113,5 +115,22 @@ public class MockFindScpTest {
         assertThatThrownBy(() -> query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .isInstanceOf(DicomServiceException.class)
                 .hasMessage("out of resources");
+    }
+
+    @Test
+    void findscp_delays_responses(DimseMock mock) throws Exception {
+        Duration delay = Duration.ofSeconds(1);
+        mock.getCFindScp()
+                .stubFor(QUERY)
+                .withDelay(delay)
+                .willReturn(RESPONSE);
+
+        Callable<List<Attributes>> callable = () -> query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY);
+
+        long start = System.currentTimeMillis();
+        assertThat(callable.call())
+                .containsExactly(RESPONSE);
+        assertThat(System.currentTimeMillis() - start)
+                .isGreaterThanOrEqualTo(delay.toMillis());
     }
 }
