@@ -33,8 +33,8 @@ class Stub {
         this.exception = exception;
     }
 
-    public boolean test(Attributes rq, Attributes keys) {
-        return affectedSOPClassUID.test(rq.getString(Tag.AffectedSOPClassUID)) && expectedKeys.test(keys);
+    public boolean test(StubRegistry.IncomingRequest request) {
+        return affectedSOPClassUID.test(request.getRq().getString(Tag.AffectedSOPClassUID)) && expectedKeys.test(request.getKeys());
     }
 
     public List<Attributes> apply() throws DicomServiceException {

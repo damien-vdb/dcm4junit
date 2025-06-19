@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 
 import static com.github.damienvdb.dcm4junit.assertions.AttributesAssert.toPredicate;
 import static com.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
+import static java.util.function.Predicate.isEqual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -57,6 +58,9 @@ public class MockFindScpTest {
 
         assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .containsExactly(RESPONSE);
+
+
+        mock.getCFindScp().verify(isEqual(QUERY));
     }
 
     @Test
@@ -65,13 +69,13 @@ public class MockFindScpTest {
         mock.getCFindScp().stubFor(QUERY)
                 .willReturn(RESPONSE);
 
-        List<Attributes> results = query(mock, UID.StudyRootQueryRetrieveInformationModelFind,
-                builder(QUERY)
-                        .setString(Tag.PatientID, "PID2")
-                        .build());
+        Attributes query = builder(QUERY)
+                .setString(Tag.PatientID, "PID2")
+                .build();
 
-        assertThat(results)
+        assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, query))
                 .isEmpty();
+        mock.getCFindScp().verify(isEqual(query));
     }
 
     @Test
@@ -90,6 +94,8 @@ public class MockFindScpTest {
                         .setString(Tag.PatientID, "PID2")
                         .build()))
                 .isEmpty();
+
+        mock.getCFindScp().verify(toPredicate(as -> as.hasString(Tag.PatientID, "PID2")));
     }
 
     @Test

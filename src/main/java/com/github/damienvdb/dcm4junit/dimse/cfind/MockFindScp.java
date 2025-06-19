@@ -17,10 +17,6 @@ import java.util.function.Predicate;
 
 import static java.util.function.Predicate.isEqual;
 
-/**
- * TODO: Map a behavior (delays, errors) by expected keys
- * TODO: Requests verification
- */
 @Slf4j
 public class MockFindScp extends BasicCFindSCP {
 
@@ -45,13 +41,17 @@ public class MockFindScp extends BasicCFindSCP {
         return new OngoingCFindStub(predicate, registry);
     }
 
+    public void verify(Predicate<Attributes> predicate) {
+        this.registry.verifyRequests(predicate);
+    }
+
 
     @Override
     protected QueryTask calculateMatches(Association as, PresentationContext pc, Attributes rq, Attributes keys) throws DicomServiceException {
         if (this.registry.isEmpty()) {
             throw new DicomServiceException(Status.UnableToProcess, "No ongoing stub");
         }
-        List<Attributes> datasets = this.registry.get(rq, keys);
+        List<Attributes> datasets = this.registry.findResponses(rq, keys);
         Iterator<Attributes> iterator = datasets.iterator();
 
         return new BasicQueryTask(as, pc, rq, keys) {
