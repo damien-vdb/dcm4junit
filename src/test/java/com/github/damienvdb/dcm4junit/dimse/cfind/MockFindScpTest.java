@@ -16,8 +16,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import static com.github.damienvdb.dcm4junit.assertions.AttributesAssert.toPredicate;
-import static com.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
+import static io.github.damienvdb.dcm4junit.assertions.AttributesAssert.toPredicate;
+import static io.github.damienvdb.dcm4junit.dicom.AttributesBuilder.builder;
 import static java.util.function.Predicate.isEqual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

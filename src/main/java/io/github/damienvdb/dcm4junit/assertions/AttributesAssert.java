@@ -16,7 +16,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static com.github.damienvdb.dcm4junit.assertions.Assertions.assertThat;
+import static io.github.damienvdb.dcm4junit.assertions.Assertions.assertThat;
 
 /**
  * TODO:
