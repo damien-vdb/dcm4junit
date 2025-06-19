@@ -1,17 +1,14 @@
 package com.github.damienvdb.dcm4junit.dimse;
 
-import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockExtension;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.tool.storescu.StoreSCU;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(DimseMockExtension.class)
 @DimseMockSettings(aet = "MockStoreScpTest")
 public class MockStoreScpTest {
 

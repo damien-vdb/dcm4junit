@@ -1,7 +1,6 @@
 package com.github.damienvdb.dcm4junit.dimse.cfind;
 
 import com.github.damienvdb.dcm4junit.dimse.DimseMock;
-import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockExtension;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
 import com.github.damienvdb.dcm4junit.utilities.FindScu;
 import org.dcm4che3.data.Attributes;
@@ -10,7 +9,6 @@ import org.dcm4che3.data.UID;
 import org.dcm4che3.net.Status;
 import org.dcm4che3.net.service.DicomServiceException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.Duration;
 import java.util.List;
@@ -22,7 +20,6 @@ import static java.util.function.Predicate.isEqual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(DimseMockExtension.class)
 @DimseMockSettings(aet = "MockFindScpTest")
 public class MockFindScpTest {
 
@@ -36,27 +33,13 @@ public class MockFindScpTest {
             .setString(Tag.StudyDate, "20250101")
             .build();
 
-    private static FindScu.Options configureOptions(DimseMock mock) {
-        return FindScu.Options.builder()
-                .calledAetTitle(mock.getAeTitle())
-                .hostname(mock.getHostname())
-                .port(mock.getPort())
-                .build();
-    }
-
-    private static List<Attributes> query(DimseMock mock, String abstractSyntax, Attributes query) {
-        try (var scu = new FindScu(configureOptions(mock))) {
-            return scu.query(abstractSyntax, query);
-        }
-    }
-
     @Test
     void findscp_responds_on_expected_keys(DimseMock mock) {
 
         mock.getCFindScp().stubFor(QUERY)
                 .willReturn(RESPONSE);
 
-        assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .containsExactly(RESPONSE);
 
 
@@ -73,7 +56,7 @@ public class MockFindScpTest {
                 .setString(Tag.PatientID, "PID2")
                 .build();
 
-        assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, query))
+        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, query))
                 .isEmpty();
         mock.getCFindScp().verify(isEqual(query));
     }
@@ -86,10 +69,10 @@ public class MockFindScpTest {
                 )
                 .willReturn(RESPONSE);
 
-        assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .containsExactly(RESPONSE);
 
-        assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind,
+        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind,
                 builder(QUERY)
                         .setString(Tag.PatientID, "PID2")
                         .build()))
@@ -107,7 +90,7 @@ public class MockFindScpTest {
                 .willReturn(RESPONSE);
 
 
-        assertThat(query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .isEmpty();
     }
 
@@ -118,7 +101,7 @@ public class MockFindScpTest {
                 .stubFor(QUERY)
                 .willThrow(new DicomServiceException(Status.OutOfResources, "out of resources"));
 
-        assertThatThrownBy(() -> query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThatThrownBy(() -> FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .isInstanceOf(DicomServiceException.class)
                 .hasMessage("out of resources");
     }
@@ -131,7 +114,7 @@ public class MockFindScpTest {
                 .withDelay(delay)
                 .willReturn(RESPONSE);
 
-        Callable<List<Attributes>> callable = () -> query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY);
+        Callable<List<Attributes>> callable = () -> FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY);
 
         long start = System.currentTimeMillis();
         assertThat(callable.call())

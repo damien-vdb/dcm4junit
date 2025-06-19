@@ -35,7 +35,7 @@ public class MockFindScp extends BasicCFindSCP {
      *
      * @param predicate Predicate on expected keys
      * @return ongoing stub
-     * @see com.github.damienvdb.dcm4junit.assertions.AttributesAssert#toPredicate(java.util.function.Function) to generate predicates from assertions.
+     * @see io.github.damienvdb.dcm4junit.assertions.AttributesAssert#toPredicate(java.util.function.Function) to generate predicates from assertions.
      */
     public OngoingCFindStub stubFor(Predicate<Attributes> predicate) {
         return new OngoingCFindStub(predicate, registry);

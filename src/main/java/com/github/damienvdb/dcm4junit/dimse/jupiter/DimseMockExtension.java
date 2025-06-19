@@ -96,6 +96,7 @@ public class DimseMockExtension implements ParameterResolver, BeforeEachCallback
             // Create a new mock for each test if not in per-test-suite mode
             mock = (customMock != null) ? customMock : createNewMock(retrieveAnnotationFromTestClass(context));
         }
+        mock.reset();
     }
 
     @Override

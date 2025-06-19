@@ -6,13 +6,13 @@ import com.github.damienvdb.dcm4junit.dimse.jupiter.CStoreScp;
 import com.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import lombok.experimental.Delegate;
 import org.dcm4che3.net.*;
 import org.dcm4che3.net.service.DicomServiceRegistry;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,7 +31,6 @@ public class DimseMock implements Closeable {
     private final String hostname;
     @Getter
     private int port;
-    @Delegate(excludes = {AssociationMonitor.class})
     private final FakeAssociationMonitor associationMonitor;
     private final Optional<MockStoreScp> mockStoreScp;
     private final Optional<MockFindScp> mockFindScp;
@@ -125,6 +124,24 @@ public class DimseMock implements Closeable {
         associationMonitor.clear();
         mockStoreScp.ifPresent(MockStoreScp::clear);
         mockFindScp.ifPresent(MockFindScp::clear);
+    }
+
+    public List<Association> getAssociationsEstablished() {
+        return this.associationMonitor.getAssociationsEstablished();
+    }
+
+
+    public List<Association> getAssociationsFailed() {
+        return this.associationMonitor.getAssociationsFailed();
+    }
+
+
+    public List<Association> getAssociationsRejected() {
+        return this.associationMonitor.getAssociationsRejected();
+    }
+
+    public List<Association> getAssociationsAccepted() {
+        return this.associationMonitor.getAssociationsAccepted();
     }
 
     public String getAeTitle() {

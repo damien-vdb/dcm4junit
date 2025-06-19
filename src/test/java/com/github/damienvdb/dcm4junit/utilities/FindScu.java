@@ -1,5 +1,6 @@
 package com.github.damienvdb.dcm4junit.utilities;
 
+import com.github.damienvdb.dcm4junit.dimse.DimseMock;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -50,6 +51,20 @@ public class FindScu implements Closeable {
         device.setExecutor(executor);
         device.setScheduledExecutor(scheduledExecutor);
 
+    }
+
+    private static Options configureOptions(DimseMock mock) {
+        return Options.builder()
+                .calledAetTitle(mock.getAeTitle())
+                .hostname(mock.getHostname())
+                .port(mock.getPort())
+                .build();
+    }
+
+    public static List<Attributes> query(DimseMock mock, String abstractSyntax, Attributes query) {
+        try (var scu = new FindScu(configureOptions(mock))) {
+            return scu.query(abstractSyntax, query);
+        }
     }
 
     /**
