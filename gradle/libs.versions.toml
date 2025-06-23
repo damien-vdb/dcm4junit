@@ -8,8 +8,16 @@ lombok = "1.18.38"
 junit = "5.10.0"
 dcm4che = "5.33.1"
 assertj = "3.27.3"
+spring = "5.3.39"
+spring-boot = "2.7.18"
 
 [libraries]
+# Spring
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "spring" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+
 # Lombok
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 

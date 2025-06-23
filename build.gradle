@@ -20,12 +20,18 @@ dependencies {
 
     // Implementation dependencies
     implementation libs.dcm4che.core
+    implementation libs.spring.boot.test
+    implementation libs.spring.context
+    implementation libs.spring.test
 
     // Test dependencies
     testImplementation libs.junit.jupiter
     testImplementation libs.assertj.core
     testImplementation libs.dcm4che.net
-    testImplementation libs.dcm4che.tool.storescu
+    testImplementation(libs.dcm4che.tool.storescu) {
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+    testImplementation libs.spring.boot.starter
 
     // Test annotation processors
     testCompileOnly libs.lombok

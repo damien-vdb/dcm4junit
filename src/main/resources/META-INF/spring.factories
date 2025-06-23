@@ -1,0 +1,1 @@
+org.springframework.test.context.ContextCustomizerFactory=io.github.damienvdb.dcm4junit.dimse.jupiter.spring.DimseMockContextCustomizerFactory

@@ -67,6 +67,10 @@ public class MockFindScp extends BasicCFindSCP {
         };
     }
 
+    public int countStubs() {
+        return this.registry.size();
+    }
+
     public void clear() {
         this.registry.clear();
     }

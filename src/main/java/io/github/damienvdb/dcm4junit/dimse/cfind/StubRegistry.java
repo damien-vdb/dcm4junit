@@ -70,6 +70,10 @@ class StubRegistry {
         this.stubs.clear();
     }
 
+    public int size() {
+        return this.stubs.size();
+    }
+
     @RequiredArgsConstructor
     @Getter
     static final class IncomingRequest {

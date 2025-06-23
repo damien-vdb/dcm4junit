@@ -48,7 +48,7 @@ public class DimseMock implements Closeable {
 
         mockFindScp = settings.map(DimseMockSettings::cfindScp)
                 .filter(CFindScp::enabled)
-                .map(cfindScp -> new MockFindScp(cfindScp));
+                .map(MockFindScp::new);
 
         device = new Device("mockscp");
         connection = new Connection();
@@ -86,6 +86,10 @@ public class DimseMock implements Closeable {
         device.setScheduledExecutor(scheduledExecutorService);
         device.setExecutor(executorService);
         bindConnection();
+    }
+
+    public boolean isStarted() {
+        return connection.isListening();
     }
 
     private void bindConnection() throws IOException, GeneralSecurityException {
@@ -155,5 +159,4 @@ public class DimseMock implements Closeable {
     public MockFindScp getCFindScp() {
         return mockFindScp.orElseThrow(() -> new IllegalStateException("Mock C-FIND SCP is not enabled"));
     }
-
 }

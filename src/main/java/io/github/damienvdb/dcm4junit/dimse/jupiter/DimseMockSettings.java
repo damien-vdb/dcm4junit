@@ -10,6 +10,9 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface DimseMockSettings {
+
+    String name() default "dimsemock";
+
     boolean perTestSuite() default false;
 
     String hostname() default "localhost";
