@@ -1,49 +1,69 @@
-plugins {
-    id 'java-library'
-    id 'maven-publish'
-    alias libs.plugins.kordamp
-    alias libs.plugins.jreleaser
-}
+gradleProjects {
+    subprojects {
+        path('*') {
 
-dependencies {
-    // Platform BOMs
-    compileOnly platform(libs.junit.bom)
-    testImplementation platform(libs.junit.bom)
+            dependencies {
 
-    // Compile only dependencies
-    compileOnly libs.lombok
-    compileOnly libs.junit.jupiter.api
-    compileOnly libs.dcm4che.net
+                compileOnly platform(libs.junit.bom)
+                testImplementation platform(libs.junit.bom)
 
-    // Annotation processors
-    annotationProcessor libs.lombok
+                // DCM4CHE
+                implementation libs.dcm4che.core
+                compileOnly libs.dcm4che.net
 
-    // Implementation dependencies
-    implementation libs.dcm4che.core
-    implementation libs.spring.boot.test
-    implementation libs.spring.context
-    implementation libs.spring.test
+                // Testing
+                compileOnly libs.junit.jupiter.api
+                testImplementation libs.junit.jupiter
+                testImplementation libs.assertj.core
 
-    // Test dependencies
-    testImplementation libs.junit.jupiter
-    testImplementation libs.assertj.core
-    testImplementation libs.dcm4che.net
-    testImplementation(libs.dcm4che.tool.storescu) {
-        exclude group: 'ch.qos.logback', module: 'logback-classic'
+                // Lombok
+                annotationProcessor libs.lombok
+                compileOnly libs.lombok
+                testCompileOnly libs.lombok
+                testAnnotationProcessor libs.lombok
+            }
+
+            compileJava {
+                options.release = 11
+            }
+        }
+
+        path(':dcm4junit-test') {
+            dependencies {
+                testImplementation libs.dcm4che.net
+                testImplementation(libs.dcm4che.tool.storescu) {
+                    exclude group: 'ch.qos.logback', module: 'logback-classic'
+                }
+            }
+
+            config {
+                publishing { enabled = true }
+                info {
+                    description = 'DICOM test utilities and assertions for Java'
+                }
+            }
+        }
+
+        path(':dcm4junit-spring-boot-test') {
+
+            dependencies {
+                implementation project(':dcm4junit-test')
+
+                testImplementation libs.dcm4che.net
+
+                implementation libs.spring.context
+                implementation libs.spring.test
+                testImplementation libs.spring.boot.starter.test
+            }
+
+            config {
+                publishing { enabled = true }
+                info {
+                    description = 'Autowire DIMSE Services with Spring Boot in JUnit 5 tests'
+                }
+            }
+        }
     }
-    testImplementation libs.spring.boot.starter
-
-    // Test annotation processors
-    testCompileOnly libs.lombok
-    testAnnotationProcessor libs.lombok
-}
-
-compileJava {
-    options.release = 11
-}
-
-test {
-    useJUnitPlatform()
 }
 
 apply from: "${rootProject.projectDir}/gradle/config.gradle"

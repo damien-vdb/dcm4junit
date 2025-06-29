@@ -1,7 +1,4 @@
 [versions]
-# Plugins
-kordamp = "0.54.0"
-jreleaser = "1.18.0"
 
 # Dependencies
 lombok = "1.18.38"
@@ -15,8 +12,7 @@ spring-boot = "2.7.18"
 # Spring
 spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
 spring-test = { module = "org.springframework:spring-test", version.ref = "spring" }
-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
-spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 
 # Lombok
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -33,7 +29,3 @@ dcm4che-tool-storescu = { module = "org.dcm4che.tool:dcm4che-tool-storescu", ver
 
 # AssertJ
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
-
-[plugins]
-kordamp = { id = "org.kordamp.gradle.java-project", version.ref = "kordamp" }
-jreleaser = { id = "org.jreleaser", version.ref = "jreleaser" }

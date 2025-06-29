@@ -1,12 +1,5 @@
 def stagingDir = 'build/staging-deploy'
 
-publishing {
-    repositories {
-        maven {
-            url = uri(stagingDir)
-        }
-    }
-}
 
 jreleaser {
     catalog {
@@ -48,6 +41,10 @@ jreleaser {
 
                 append {
                     enabled = true
+                }
+
+                contributors {
+                    enabled = false
                 }
             }
         }

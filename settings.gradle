@@ -1,4 +1,34 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "org.kordamp.gradle:settings-gradle-plugin:0.54.0"
+        classpath "org.kordamp.gradle:java-project-gradle-plugin:0.54.0"
+        classpath "org.jreleaser:org.jreleaser.gradle.plugin:1.18.0"
+    }
+}
+
+apply plugin: 'org.kordamp.gradle.settings'
+
 rootProject.name = 'dcm4junit'
+
+projects {
+    layout = 'two-level'
+    directories = ['docs', 'subprojects']
+
+    plugins {
+        path(':') {
+            id 'org.kordamp.gradle.java-project'
+            id 'maven-publish'
+            id 'org.jreleaser'
+        }
+        dir('subprojects') {
+            id 'org.kordamp.gradle.java-project'
+            id 'java-library'
+        }
+    }
+}
 
 dependencyResolutionManagement {
     repositories {

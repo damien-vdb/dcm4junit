@@ -8,8 +8,6 @@ config {
     }
     info {
         name = rootProject.name
-        group = 'io.github.damien-vdb'
-        description = 'Utilities and assertions for DICOM test in Java'
         inceptionYear = '2025'
         vendor = 'damien-vdb'
         people {
@@ -17,6 +15,13 @@ config {
                 id = 'damien-vdb'
                 name = 'damien-vdb'
                 roles = ['developer']
+            }
+        }
+
+        repositories {
+            repository {
+                name = 'local'
+                url = uri('build/staging-deploy')
             }
         }
 
@@ -40,5 +45,11 @@ config {
                 licenseId = 'MIT'
             }
         }
+    }
+
+    publishing {
+        enabled = false
+        releasesRepository = 'local'
+        snapshotsRepository = 'local'
     }
 }
