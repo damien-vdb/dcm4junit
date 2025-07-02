@@ -6,6 +6,7 @@ gradleProjects {
 
                 compileOnly platform(libs.junit.bom)
                 testImplementation platform(libs.junit.bom)
+                testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
                 // DCM4CHE
                 implementation libs.dcm4che.core
@@ -28,7 +29,7 @@ gradleProjects {
             }
 
             compileJava {
-                options.release = 11
+                options.release = 17
             }
         }
 
