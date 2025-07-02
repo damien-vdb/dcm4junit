@@ -1,6 +1,9 @@
 # DCM4JUnit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Build Status](https://github.com/damien-vdb/dcm4junit/actions/workflows/build.yml/badge.svg?branch=main)
+[![javadoc](https://javadoc.io/badge2/io.github.damien-vdb/dcm4junit-test/javadoc.svg?color=blue&label=javadoc%20dcm4junit-test)](https://javadoc.io/doc/io.github.damien-vdb/dcm4junit-test)
+[![javadoc](https://javadoc.io/badge2/io.github.damien-vdb/dcm4junit-spring-boot-test/javadoc.svg?color=blue&label=javadoc%20dcm4junit-spring-boot-test)](https://javadoc.io/doc/io.github.damien-vdb/dcm4junit-spring-boot-test)
 
 DCM4JUnit is a testing library that provides utilities and extensions for testing DICOM applications using JUnit 5. It's
 built on top of the dcm4che library and provides a simple way to mock DICOM services and verify DICOM operations in your
@@ -29,7 +32,7 @@ Add the following dependency to your project:
 
 ```kotlin
 dependencies {
-    testImplementation("io.github.damien-vdb:dcm4junit:0.1.0")
+    testImplementation("io.github.damien-vdb:dcm4junit-test:0.2.0")
 }
 ```
 
@@ -39,8 +42,8 @@ dependencies {
 
 <dependency>
     <groupId>io.github.damien-vdb</groupId>
-    <artifactId>dcm4junit</artifactId>
-    <version>0.1.0</version>
+    <artifactId>dcm4junit-test</artifactId>
+    <version>0.2.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -137,6 +140,39 @@ void generateTestStudy() {
     assertThat(instances).hasSize(10);
 }
 ```
+
+### Spring Boot Integration: dcm4junit-spring-boot-test
+
+The `dcm4junit-spring-boot-test` module provides annotations for seamless integration of the DIMSE mock server with
+Spring Boot tests.
+
+#### Provided Annotations
+
+- `@EnableDimseMock` — Enables and configures a DIMSE mock server for your test context. Accepts a `@DimseMockSettings`
+  parameter for customization.
+- `@DimseMockSettings` — Used to specify settings for the mock server, such as AE title and name like in dcm4junit-test.
+- `@AutowiredDimseMock` — Injects a configured `DimseMock` instance into your test class.
+
+#### Example Usage
+
+```java
+
+@EnableDimseMock(value =
+@DimseMockSettings(
+        name = "server",
+        aet = "MOCK"
+)
+)
+@SpringBootTest
+class AfterClassSpringBootExtensionTest {
+    @AutowiredDimseMock("server")
+    DimseMock dimseMock;
+    // ...
+}
+```
+
+This allows you to use the mock server in Spring Boot tests, with full support for dependency injection and custom
+settings.
 
 ## Building from Source
 
