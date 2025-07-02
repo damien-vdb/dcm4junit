@@ -2,10 +2,10 @@
 
 # Dependencies
 lombok = "1.18.38"
-junit = "5.10.0"
+junit = "5.13.2"
 dcm4che = "5.33.1"
 assertj = "3.27.3"
-spring-boot = "2.7.18"
+spring-boot = "3.5.3"
 
 [libraries]
 # Spring
