@@ -25,6 +25,10 @@ config {
             }
         }
 
+        issueManagement {
+            url = 'https://github.com/damien-vdb/dcm4junit/issues'
+        }
+
         links {
             website = 'https://github.com/damien-vdb/dcm4junit'
             issueTracker = 'https://github.com/damien-vdb/dcm4junit/issues'
