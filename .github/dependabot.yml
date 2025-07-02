@@ -7,13 +7,15 @@ version: 2
 updates:
   - package-ecosystem: "gradle"
     directory: "/"
-    prefix: "chore(deps)"
+    commit-message:
+      prefix: "chore(deps)"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "github-actions"
     directory: "/"
-    prefix: "chore(deps)"
+    commit-message:
+      prefix: "chore(deps)"
     schedule:
       interval: "weekly"
     groups:
