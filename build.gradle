@@ -23,6 +23,10 @@ gradleProjects {
                 testAnnotationProcessor libs.lombok
             }
 
+            tasks.named('test', Test) {
+                useJUnitPlatform()
+            }
+
             compileJava {
                 options.release = 11
             }
@@ -51,6 +55,7 @@ gradleProjects {
 
                 testImplementation libs.dcm4che.net
 
+                implementation platform(libs.spring.boot.bom)
                 implementation libs.spring.context
                 implementation libs.spring.test
                 testImplementation libs.spring.boot.starter.test
