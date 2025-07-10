@@ -1,6 +1,6 @@
 package io.github.damienvdb.dcm4junit.dimse.cfind;
 
-import io.github.damienvdb.dcm4junit.dimse.cfind.Stub.StubBuilder;
+import io.github.damienvdb.dcm4junit.dimse.cfind.CFindStub.CFindStubBuilder;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.service.DicomServiceException;
 
@@ -15,11 +15,11 @@ import static java.util.function.Predicate.isEqual;
 
 public class OngoingCFindStub {
 
-    private final StubBuilder builder;
-    private final StubRegistry registry;
+    private final CFindStubBuilder builder;
+    private final CFindStubRegistry registry;
 
-    public OngoingCFindStub(Predicate<Attributes> keysPredicate, StubRegistry registry) {
-        this.builder = Stub.builder().expectedKeys(keysPredicate);
+    public OngoingCFindStub(Predicate<Attributes> keysPredicate, CFindStubRegistry registry) {
+        this.builder = CFindStub.builder().expectedKeys(keysPredicate);
         this.registry = registry;
     }
 

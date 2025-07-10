@@ -1,7 +1,9 @@
 package io.github.damienvdb.dcm4junit.dimse;
 
 import io.github.damienvdb.dcm4junit.dimse.cfind.MockFindScp;
+import io.github.damienvdb.dcm4junit.dimse.cmove.MockMoveScp;
 import io.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
+import io.github.damienvdb.dcm4junit.dimse.jupiter.CMoveScp;
 import io.github.damienvdb.dcm4junit.dimse.jupiter.CStoreScp;
 import io.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
 import lombok.Getter;
@@ -32,6 +34,7 @@ public class DimseMock implements Closeable {
     private final FakeAssociationMonitor associationMonitor;
     private final Optional<MockStoreScp> mockStoreScp;
     private final Optional<MockFindScp> mockFindScp;
+    private final Optional<MockMoveScp> mockMoveScp;
     @Getter
     private int port;
     private ExecutorService executorService;
@@ -49,6 +52,10 @@ public class DimseMock implements Closeable {
         mockFindScp = settings.map(DimseMockSettings::cfindScp)
                 .filter(CFindScp::enabled)
                 .map(MockFindScp::new);
+
+        mockMoveScp = settings.map(DimseMockSettings::cmoveScp)
+                .filter(CMoveScp::enabled)
+                .map(MockMoveScp::new);
 
         device = new Device("mockscp");
         connection = new Connection();
@@ -76,6 +83,7 @@ public class DimseMock implements Closeable {
         DicomServiceRegistry serviceRegistry = new DicomServiceRegistry();
         mockStoreScp.ifPresent(serviceRegistry::addDicomService);
         mockFindScp.ifPresent(serviceRegistry::addDicomService);
+        mockMoveScp.ifPresent(serviceRegistry::addDicomService);
         return serviceRegistry;
     }
 
@@ -158,5 +166,9 @@ public class DimseMock implements Closeable {
 
     public MockFindScp getCFindScp() {
         return mockFindScp.orElseThrow(() -> new IllegalStateException("Mock C-FIND SCP is not enabled"));
+    }
+
+    public MockMoveScp getCMoveScp() {
+        return mockMoveScp.orElseThrow(() -> new IllegalStateException("Mock C-MOVE SCP is not enabled"));
     }
 }

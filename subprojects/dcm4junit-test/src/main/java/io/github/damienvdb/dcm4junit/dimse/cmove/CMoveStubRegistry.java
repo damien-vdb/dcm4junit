@@ -1,25 +1,22 @@
-package io.github.damienvdb.dcm4junit.dimse.cfind;
+package io.github.damienvdb.dcm4junit.dimse.cmove;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.UID;
-import org.dcm4che3.net.service.DicomServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-class StubRegistry {
+public class CMoveStubRegistry {
+    public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelMove;
 
-    public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelFind;
-
-    private final List<Stub> stubs = new ArrayList<>();
+    private final List<CMoveStub> stubs = new ArrayList<>();
     private final List<IncomingRequest> requests = new ArrayList<>();
 
     private static String formatRequests(List<IncomingRequest> matches) {
@@ -28,28 +25,8 @@ class StubRegistry {
                 .collect(Collectors.joining("\n\n"));
     }
 
-    public void register(Stub stub) {
+    protected void register(CMoveStub stub) {
         this.stubs.add(stub);
-    }
-
-    public boolean isEmpty() {
-        return stubs.isEmpty();
-    }
-
-    List<Attributes> findResponses(Attributes rq, Attributes keys) throws DicomServiceException {
-        IncomingRequest incomingRequest = new IncomingRequest(rq, keys);
-        requests.add(incomingRequest);
-        List<Stub> responsesMatched = stubs.stream()
-                .filter(s -> s.test(incomingRequest))
-                .collect(Collectors.toList());
-        if (responsesMatched.isEmpty()) {
-            return emptyList();
-        }
-        if (responsesMatched.size() == 1) {
-            return responsesMatched.get(0).apply();
-        }
-
-        throw new IllegalStateException("More than one stub matched for " + keys);
     }
 
     void verifyRequests(Predicate<Attributes> predicate) {
@@ -63,7 +40,10 @@ class StubRegistry {
             return;
         }
         throw new IllegalStateException("More than one request matched predicate. Actual requests:\n" + formatRequests(matches));
+    }
 
+    public boolean isEmpty() {
+        return stubs.isEmpty();
     }
 
     public void clear() {
@@ -72,6 +52,22 @@ class StubRegistry {
 
     public int size() {
         return this.stubs.size();
+    }
+
+    public Optional<CMoveStub> findStub(Attributes rq, Attributes keys) {
+        IncomingRequest incomingRequest = new IncomingRequest(rq, keys);
+        requests.add(incomingRequest);
+        List<CMoveStub> responsesMatched = stubs.stream()
+                .filter(s -> s.test(incomingRequest))
+                .collect(Collectors.toList());
+        if (responsesMatched.isEmpty()) {
+            return Optional.empty();
+        }
+        if (responsesMatched.size() == 1) {
+            return Optional.ofNullable(responsesMatched.get(0));
+        }
+
+        throw new IllegalStateException("More than one stub matched for " + keys);
     }
 
     @RequiredArgsConstructor

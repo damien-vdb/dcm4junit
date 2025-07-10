@@ -20,7 +20,7 @@ import static java.util.function.Predicate.isEqual;
 @Slf4j
 public class MockFindScp extends BasicCFindSCP {
 
-    private final StubRegistry registry = new StubRegistry();
+    private final CFindStubRegistry registry = new CFindStubRegistry();
 
     public MockFindScp(CFindScp cfindScp) {
         super(cfindScp.sopClasses());

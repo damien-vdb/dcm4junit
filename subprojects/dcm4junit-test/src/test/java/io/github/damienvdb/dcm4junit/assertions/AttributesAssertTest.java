@@ -20,6 +20,8 @@ class AttributesAssertTest {
     private final Attributes simple = builder()
             .setString(StudyInstanceUID, Faker.uid())
             .setString(StudyDescription, Faker.description())
+            .setInt(Rows, 10)
+            .setInt(Columns, 10)
             .setNull(SeriesInstanceUID)
             .setReadOnly()
             .build();
@@ -103,6 +105,8 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to contain a value for tag:
                               (0008,0020) StudyDate
@@ -124,6 +128,8 @@ class AttributesAssertTest {
                             Expecting actual:
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to contain a value for tag:
                               (0020,000D) StudyInstanceUID
@@ -144,6 +150,8 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to contain values for tags:
                               [(0008,0020) StudyDate, (0020,000D) StudyInstanceUID]
@@ -163,6 +171,8 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to contain tags:
                               [(0008,0021) SeriesDate, (0020,000D) StudyInstanceUID]
@@ -181,6 +191,8 @@ class AttributesAssertTest {
                             Expecting actual:
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to contain tags:
                               [(0008,0021) SeriesDate, (0020,000D) StudyInstanceUID]
@@ -201,6 +213,8 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to not contain a value for tag:
                               (0020,000D) StudyInstanceUID
@@ -227,6 +241,8 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to not contain tags:
                               [(0008,0030) StudyTime, (0020,000E) SeriesInstanceUID]
@@ -254,6 +270,8 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to not contain values for tags:
                               [(0008,0021) SeriesDate, (0020,000D) StudyInstanceUID]
@@ -280,10 +298,14 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to be equal to:
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             but was not""".formatted(
                             simple.getString(StudyDescription),
@@ -327,17 +349,39 @@ class AttributesAssertTest {
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             to not be equal to:
                             (0008,1030) LO [%s] StudyDescription
                             (0020,000D) UI [%s] StudyInstanceUID
                             (0020,000E) UI [] SeriesInstanceUID
+                            (0028,0010) US [10] Rows
+                            (0028,0011) US [10] Columns
                                                         
                             but was equal""".formatted(
                             simple.getString(StudyDescription),
                             simple.getString(StudyInstanceUID),
                             simple.getString(StudyDescription),
                             simple.getString(StudyInstanceUID)));
+        }
+
+        @Test
+        void hasInt() {
+            int rows = simple.getInt(Rows, -1);
+
+            assertAttributes()
+                    .hasInt(Rows, rows);
+
+
+            assertThatThrownBy(() -> assertAttributes()
+                    .hasInt(Rows, rows + 1))
+                    .hasMessageContaining("to have value '%s' for tag:\n  %s", rows + 1, "(0028,0010) Rows")
+                    .hasMessageContaining("value is different");
+
+            assertThatThrownBy(() -> assertAttributes()
+                    .hasInt(NumberOfCompletedSuboperations, rows))
+                    .hasMessageContaining("tag is not present");
         }
 
         @Test

@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Builder(access = AccessLevel.PACKAGE)
-class Stub {
+class CFindStub {
     @Builder.Default
-    private final Predicate<String> affectedSOPClassUID = Predicate.isEqual(StubRegistry.DEFAULT_SOPCLASS);
+    private final Predicate<String> affectedSOPClassUID = Predicate.isEqual(CFindStubRegistry.DEFAULT_SOPCLASS);
     private final Predicate<Attributes> expectedKeys;
     @Builder.Default
     private final Duration delay = Duration.ZERO;
@@ -21,8 +21,8 @@ class Stub {
     private final DicomServiceException exception;
 
 
-    private Stub(Predicate<String> affectedSOPClassUID, Predicate<Attributes> expectedKeys, Duration delay,
-                 List<Attributes> responses, DicomServiceException exception) {
+    private CFindStub(Predicate<String> affectedSOPClassUID, Predicate<Attributes> expectedKeys, Duration delay,
+                      List<Attributes> responses, DicomServiceException exception) {
         if (exception != null && responses != null) {
             throw new IllegalArgumentException("Cannot specify both responses and exception");
         }
@@ -33,7 +33,7 @@ class Stub {
         this.exception = exception;
     }
 
-    public boolean test(StubRegistry.IncomingRequest request) {
+    public boolean test(CFindStubRegistry.IncomingRequest request) {
         return affectedSOPClassUID.test(request.getRq().getString(Tag.AffectedSOPClassUID)) && expectedKeys.test(request.getKeys());
     }
 
@@ -58,6 +58,6 @@ class Stub {
     }
 
     // Working around lombok compilation issue with Gradle (referenced in a field)
-    public static class StubBuilder {
+    public static class CFindStubBuilder {
     }
 }
