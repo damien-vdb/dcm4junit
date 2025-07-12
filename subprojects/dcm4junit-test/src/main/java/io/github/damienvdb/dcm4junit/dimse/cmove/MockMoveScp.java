@@ -1,5 +1,6 @@
 package io.github.damienvdb.dcm4junit.dimse.cmove;
 
+import io.github.damienvdb.dcm4junit.dimse.StubRegistry;
 import io.github.damienvdb.dcm4junit.dimse.jupiter.CMoveScp;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ import static java.util.function.Predicate.isEqual;
 @Slf4j
 public class MockMoveScp extends BasicCMoveSCP {
 
-    private final CMoveStubRegistry registry = new CMoveStubRegistry();
+    private final StubRegistry<CMoveStub> registry = new StubRegistry<>();
 
     public MockMoveScp(CMoveScp cmoveScp) {
         super(cmoveScp.sopClasses());

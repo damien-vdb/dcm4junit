@@ -1,5 +1,6 @@
 package io.github.damienvdb.dcm4junit.dimse.cfind;
 
+import io.github.damienvdb.dcm4junit.dimse.StubRegistry;
 import io.github.damienvdb.dcm4junit.dimse.cfind.CFindStub.CFindStubBuilder;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.UID;
@@ -17,10 +18,10 @@ import static java.util.function.Predicate.isEqual;
 public class OngoingCFindStub {
 
     public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelFind;
-    private final CFindStubRegistry registry;
+    private final StubRegistry<CFindStub> registry;
     private final CFindStubBuilder<?, ?> builder;
 
-    public OngoingCFindStub(Predicate<Attributes> keysPredicate, CFindStubRegistry registry) {
+    public OngoingCFindStub(Predicate<Attributes> keysPredicate, StubRegistry<CFindStub> registry) {
         this.builder = CFindStub.builder()
                 .affectedSOPClassUID(Predicate.isEqual(DEFAULT_SOPCLASS))
                 .expectedKeys(keysPredicate);

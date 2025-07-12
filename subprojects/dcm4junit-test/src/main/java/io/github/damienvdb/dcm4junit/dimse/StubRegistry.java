@@ -49,12 +49,12 @@ public class StubRegistry<S extends Stub<?>> {
                 .filter(r -> predicate.test(r.getKeys()))
                 .collect(Collectors.toList());
         if (matches.isEmpty()) {
-            throw new AssertionError("No requests matched predicate. Actual requests:\n" + StubRegistry.formatRequests(matches));
+            throw new AssertionError("No requests matched predicate. Actual requests:\n" + formatRequests(matches));
         }
         if (matches.size() == 1) {
             return;
         }
-        throw new IllegalStateException("More than one request matched predicate. Actual requests:\n" + StubRegistry.formatRequests(matches));
+        throw new IllegalStateException("More than one request matched predicate. Actual requests:\n" + formatRequests(matches));
 
     }
 

@@ -1,5 +1,6 @@
 package io.github.damienvdb.dcm4junit.dimse.cfind;
 
+import io.github.damienvdb.dcm4junit.dimse.StubRegistry;
 import io.github.damienvdb.dcm4junit.dimse.jupiter.CFindScp;
 import lombok.extern.slf4j.Slf4j;
 import org.dcm4che3.data.Attributes;
@@ -20,7 +21,7 @@ import static java.util.function.Predicate.isEqual;
 @Slf4j
 public class MockFindScp extends BasicCFindSCP {
 
-    private final CFindStubRegistry registry = new CFindStubRegistry();
+    private final StubRegistry<CFindStub> registry = new StubRegistry<>();
 
     public MockFindScp(CFindScp cfindScp) {
         super(cfindScp.sopClasses());

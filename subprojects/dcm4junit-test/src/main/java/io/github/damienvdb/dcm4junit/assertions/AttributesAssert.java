@@ -321,7 +321,7 @@ public abstract class AttributesAssert<SELF extends AttributesAssert<SELF>> {
     }
 
     /**
-     * Asserts that the attributes contain a string value for the specified tag
+     * Asserts that the attributes contain a value for the specified tag
      * that satisfies the given predicate.
      *
      * @param tag            the tag to check for a string value

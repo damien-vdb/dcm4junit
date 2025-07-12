@@ -1,5 +1,6 @@
 package io.github.damienvdb.dcm4junit.dimse.cmove;
 
+import io.github.damienvdb.dcm4junit.dimse.StubRegistry;
 import io.github.damienvdb.dcm4junit.dimse.cmove.CMoveStub.CMoveStubBuilder;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.UID;
@@ -10,14 +11,14 @@ import java.util.function.Predicate;
 
 import static java.util.function.Predicate.isEqual;
 
-public class OngoingCMoveStub extends CMoveStubRegistry {
+public class OngoingCMoveStub {
 
     public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelMove;
 
-    private final CMoveStubRegistry registry;
+    private final StubRegistry<CMoveStub> registry;
     private final CMoveStubBuilder<?, ?> builder;
 
-    public OngoingCMoveStub(Predicate<Attributes> keysPredicate, CMoveStubRegistry registry) {
+    public OngoingCMoveStub(Predicate<Attributes> keysPredicate, StubRegistry<CMoveStub> registry) {
         this.builder = CMoveStub.builder()
                 .affectedSOPClassUID(Predicate.isEqual(DEFAULT_SOPCLASS))
                 .expectedKeys(keysPredicate);
