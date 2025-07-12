@@ -33,9 +33,9 @@ public class MockMoveScpTest {
         // Mock the C-MOVE to forward to its C-STORE SCP, so that I can check it
         mock.getCMoveScp().stubFor(QUERY)
                 .willStore(FILE.toPath())
-                .to(mock.getAeTitle(), mock.getHostname(), mock.getPort());
+                .to(mock.getHostname(), mock.getPort());
 
-        Optional<Attributes> rsp = Scu.cmove(mock, UID.StudyRootQueryRetrieveInformationModelMove, QUERY, "TARGET_AET");
+        Optional<Attributes> rsp = Scu.cmove(mock, UID.StudyRootQueryRetrieveInformationModelMove, QUERY, mock.getAeTitle());
         assertThat(rsp.get())
                 .hasInt(Tag.NumberOfCompletedSuboperations, 1)
                 .hasInt(Tag.NumberOfFailedSuboperations, 0)

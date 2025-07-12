@@ -35,12 +35,12 @@ public class OngoingCMoveStub {
         return this;
     }
 
-    public void to(String aet, String ip, int port) {
-        this.builder.aem(aet)
-                .hostname(ip)
-                .port(port)
-                .build();
-        this.registry.register(this.builder.aem(aet)
+    public void to(String ip, int port) {
+        this.to(null, ip, port);
+    }
+
+    public void to(String overrideAet, String ip, int port) {
+        this.registry.register(this.builder.aem(overrideAet)
                 .hostname(ip)
                 .port(port)
                 .build());

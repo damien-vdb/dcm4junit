@@ -76,7 +76,8 @@ public class MockMoveScp extends BasicCMoveSCP {
         destination.setHostname(stub.getHostname());
         destination.setPort(stub.getPort());
 
-        AAssociateRQ aarq = makeAAssociateRQ(as.getLocalAET(), stub.getAem(), locators);
+        String aem = stub.getAem() == null ? rq.getString(Tag.MoveDestination) : stub.getAem();
+        AAssociateRQ aarq = makeAAssociateRQ(as.getLocalAET(), aem, locators);
         Association storeas = openStoreAssociation(as, destination, aarq);
 
         return new BasicRetrieveTask<>(Dimse.C_MOVE_RQ, as, pc, rq, locators, storeas);
