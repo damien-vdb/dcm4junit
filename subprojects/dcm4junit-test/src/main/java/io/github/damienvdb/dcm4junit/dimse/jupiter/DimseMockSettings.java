@@ -24,4 +24,6 @@ public @interface DimseMockSettings {
     CStoreScp cstoreScp() default @CStoreScp;
 
     CFindScp cfindScp() default @CFindScp;
+
+    CMoveScp cmoveScp() default @CMoveScp;
 }

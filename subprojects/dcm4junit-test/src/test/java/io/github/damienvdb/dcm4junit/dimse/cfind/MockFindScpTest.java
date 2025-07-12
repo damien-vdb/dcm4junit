@@ -2,7 +2,7 @@ package io.github.damienvdb.dcm4junit.dimse.cfind;
 
 import io.github.damienvdb.dcm4junit.dimse.DimseMock;
 import io.github.damienvdb.dcm4junit.dimse.jupiter.DimseMockSettings;
-import io.github.damienvdb.dcm4junit.utilities.FindScu;
+import io.github.damienvdb.dcm4junit.utilities.Scu;
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
 import org.dcm4che3.data.UID;
@@ -39,7 +39,7 @@ public class MockFindScpTest {
         mock.getCFindScp().stubFor(QUERY)
                 .willReturn(RESPONSE);
 
-        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThat(Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .containsExactly(RESPONSE);
 
 
@@ -56,7 +56,7 @@ public class MockFindScpTest {
                 .setString(Tag.PatientID, "PID2")
                 .build();
 
-        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, query))
+        assertThat(Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind, query))
                 .isEmpty();
         mock.getCFindScp().verify(isEqual(query));
     }
@@ -69,10 +69,10 @@ public class MockFindScpTest {
                 )
                 .willReturn(RESPONSE);
 
-        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThat(Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .containsExactly(RESPONSE);
 
-        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind,
+        assertThat(Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind,
                 builder(QUERY)
                         .setString(Tag.PatientID, "PID2")
                         .build()))
@@ -90,7 +90,7 @@ public class MockFindScpTest {
                 .willReturn(RESPONSE);
 
 
-        assertThat(FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThat(Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .isEmpty();
     }
 
@@ -101,7 +101,7 @@ public class MockFindScpTest {
                 .stubFor(QUERY)
                 .willThrow(new DicomServiceException(Status.OutOfResources, "out of resources"));
 
-        assertThatThrownBy(() -> FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
+        assertThatThrownBy(() -> Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY))
                 .isInstanceOf(DicomServiceException.class)
                 .hasMessage("out of resources");
     }
@@ -114,7 +114,7 @@ public class MockFindScpTest {
                 .withDelay(delay)
                 .willReturn(RESPONSE);
 
-        Callable<List<Attributes>> callable = () -> FindScu.query(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY);
+        Callable<List<Attributes>> callable = () -> Scu.cfind(mock, UID.StudyRootQueryRetrieveInformationModelFind, QUERY);
 
         long start = System.currentTimeMillis();
         assertThat(callable.call())

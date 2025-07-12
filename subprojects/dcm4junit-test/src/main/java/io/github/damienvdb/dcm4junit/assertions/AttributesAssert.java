@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -265,6 +266,26 @@ public abstract class AttributesAssert<SELF extends AttributesAssert<SELF>> {
     }
 
     /**
+     * Asserts that the attributes contain an int value for the specified tag
+     * equal to the given value.
+     *
+     * @param tag   the tag to check for a string value
+     * @param value the expected string value
+     * @return {@code this} assertion object.
+     * @throws AssertionError if the tag is not found in the attributes or the
+     *                        value is not equal to the given value
+     */
+    public SELF hasInt(int tag, int value) {
+        return has(tag, "have value '" + value + "'", (attrs, field) -> {
+            if (!field.vr().isIntType()) {
+                return false;
+            }
+            int actual = attrs.getInt(field.tag().getTag(), Integer.MIN_VALUE);
+            return value == actual;
+        });
+    }
+
+    /**
      * Asserts that the attributes contain a string value for the specified tag
      * that satisfies the given predicate.
      *
@@ -290,16 +311,29 @@ public abstract class AttributesAssert<SELF extends AttributesAssert<SELF>> {
      *                        value does not satisfy the predicate
      */
     public SELF hasStringSatisfying(int tag, Predicate<String> predicate, String expectation) {
+        return has(tag, expectation, (attrs, field) -> {
+            if (!field.vr().isStringType()) {
+                return false;
+            }
+            String actual = attrs.getString(field.tag().getTag());
+            return predicate.test(actual);
+        });
+    }
+
+    /**
+     * Asserts that the attributes contain a value for the specified tag
+     * that satisfies the given predicate.
+     *
+     * @param tag            the tag to check for a string value
+     * @param expectation    a description of what the predicate checks
+     * @param fieldPredicate
+     * @return {@code this} assertion object.
+     * @throws AssertionError if the tag is not found in the attributes or the
+     *                        value does not satisfy the predicate
+     */
+    public SELF has(int tag, String expectation, BiPredicate<Attributes, DicomField> fieldPredicate) {
         DicomTag expectedTag = new DicomTag(tag);
-        SearchOneVisitor visitor = new SearchOneVisitor(expectedTag,
-                (attrs, field) -> {
-                    if (!field.vr().isStringType()) {
-                        return false;
-                    }
-                    String actual = attrs.getString(field.tag().getTag());
-                    return predicate.test(actual);
-                }
-        );
+        SearchOneVisitor visitor = new SearchOneVisitor(expectedTag, fieldPredicate);
         Attributes attributes = visitAttributes(visitor);
         if (!visitor.isFound()) {
             var reason = visitor.isTagExists() ? "value is different" : "tag is not present";

@@ -24,7 +24,7 @@ import static org.dcm4che3.data.UID.ImplicitVRLittleEndian;
 /**
  * This class is not thread-safe.
  */
-public class FindScu implements Closeable {
+public class Scu implements Closeable {
 
     private final String transferSyntax;
     private final String calledAet;
@@ -35,7 +35,7 @@ public class FindScu implements Closeable {
     private final ExecutorService executor;
     private final ScheduledExecutorService scheduledExecutor;
 
-    public FindScu(Options options) {
+    public Scu(Options options) {
         transferSyntax = options.getTransferSyntax();
         calledAet = options.calledAetTitle;
         device = new Device(options.getDeviceName());
@@ -61,9 +61,15 @@ public class FindScu implements Closeable {
                 .build();
     }
 
-    public static List<Attributes> query(DimseMock mock, String abstractSyntax, Attributes query) {
-        try (var scu = new FindScu(configureOptions(mock))) {
-            return scu.query(abstractSyntax, query);
+    public static List<Attributes> cfind(DimseMock mock, String abstractSyntax, Attributes query) {
+        try (var scu = new Scu(configureOptions(mock))) {
+            return scu.cfind(abstractSyntax, query);
+        }
+    }
+
+    public static Optional<Attributes> cmove(DimseMock mock, String abstractSyntax, Attributes query, String aem) {
+        try (var scu = new Scu(configureOptions(mock))) {
+            return scu.cmove(abstractSyntax, query, aem);
         }
     }
 
@@ -75,14 +81,9 @@ public class FindScu implements Closeable {
      * @return List of datasets
      * @throws DicomServiceException in case of error
      */
-    @SneakyThrows
-    public List<Attributes> query(String abstractSyntax, Attributes keys) {
+    public List<Attributes> cfind(String abstractSyntax, Attributes keys) {
 
-        AAssociateRQ associateRQ = new AAssociateRQ();
-        associateRQ.setCalledAET(calledAet);
-        associateRQ.addPresentationContext(new PresentationContext(1, abstractSyntax, transferSyntax));
-        var association = ae.connect(connection, remote, associateRQ);
-        try {
+        return execute(abstractSyntax, association -> {
             DimseRSP rsp = association.cfind(abstractSyntax,
                     0,
                     keys,
@@ -97,6 +98,35 @@ public class FindScu implements Closeable {
                 Optional.ofNullable(rsp.getDataset()).ifPresent(results::add);
             }
             return results;
+        });
+    }
+
+    public Optional<Attributes> cmove(String abstractSyntax, Attributes keys, String aem) {
+        return execute(abstractSyntax, association -> {
+            DimseRSP rsp = association.cmove(abstractSyntax,
+                    0,
+                    keys,
+                    transferSyntax, aem);
+            Optional<Attributes> lastResult = Optional.empty();
+            while (rsp.next()) {
+                var status = rsp.getCommand().getInt(Tag.Status, 0);
+                if (!Status.isPending(status) && status != Status.Success) {
+                    throw new DicomServiceException(status, rsp.getCommand().getString(Tag.ErrorComment));
+                }
+                lastResult = Optional.ofNullable(rsp.getCommand());
+            }
+            return lastResult;
+        });
+    }
+
+    @SneakyThrows
+    private <T> T execute(String abstractSyntax, AssociationCallable<T> callable) {
+        AAssociateRQ associateRQ = new AAssociateRQ();
+        associateRQ.setCalledAET(calledAet);
+        associateRQ.addPresentationContext(new PresentationContext(1, abstractSyntax, transferSyntax));
+        var association = ae.connect(connection, remote, associateRQ);
+        try {
+            return callable.call(association);
         } finally {
             release(association);
         }
@@ -132,4 +162,9 @@ public class FindScu implements Closeable {
         private final String transferSyntax = ImplicitVRLittleEndian;
     }
 
+    @FunctionalInterface
+    private interface AssociationCallable<T> {
+
+        T call(Association association) throws Exception;
+    }
 }

@@ -16,12 +16,6 @@ gradleProjects {
                 compileOnly libs.junit.jupiter.api
                 testImplementation libs.junit.jupiter
                 testImplementation libs.assertj.core
-
-                // Lombok
-                annotationProcessor libs.lombok
-                compileOnly libs.lombok
-                testCompileOnly libs.lombok
-                testAnnotationProcessor libs.lombok
             }
 
             tasks.named('test', Test) {

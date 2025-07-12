@@ -11,7 +11,7 @@ tests.
 
 ## Features
 
-- **DIMSE Mock Server**: Easily create a mock DICOM SCP for testing DICOM network operations
+- **DIMSE Mock Server**: Easily create a mock DICOM SCP for testing DICOM network operations (C-FIND, C-MOVE, C-STORE).
 - **DICOM Assertions**: Rich set of assertions for verifying DICOM attributes and datasets
 - **Test Data Generation**: Generate test DICOM data with customizable attributes
 - **JUnit 5 Integration**: Seamless integration with JUnit 5's extension model
@@ -100,6 +100,20 @@ class MyDicomTest {
                 "--out-dir", "/tmp"
         };
         FindSCU.main(args);
+    }
+
+    @Test
+    void cmove(DimseMock mock) {
+
+        String aet = "aet";
+        String hostname = "localhost";
+        int port = 1234;
+
+        mock.getCMoveScp().stubFor(QUERY)
+                .willStore(FILE.toPath())
+                .to(aet, hostname, port);
+
+        // Run your DICOM client
     }
 }
 ```
