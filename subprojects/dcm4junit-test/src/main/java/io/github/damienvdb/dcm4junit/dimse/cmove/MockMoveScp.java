@@ -46,6 +46,10 @@ public class MockMoveScp extends BasicCMoveSCP {
         return new OngoingCMoveStub(isEqual(query), registry);
     }
 
+    public OngoingCMoveStub stubFor(Predicate<Attributes> predicate) {
+        return new OngoingCMoveStub(predicate, registry);
+    }
+
     public void verify(Predicate<Attributes> predicate) {
         this.registry.verifyRequests(predicate);
     }

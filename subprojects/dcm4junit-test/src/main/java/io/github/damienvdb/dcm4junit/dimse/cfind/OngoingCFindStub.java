@@ -2,6 +2,7 @@ package io.github.damienvdb.dcm4junit.dimse.cfind;
 
 import io.github.damienvdb.dcm4junit.dimse.cfind.CFindStub.CFindStubBuilder;
 import org.dcm4che3.data.Attributes;
+import org.dcm4che3.data.UID;
 import org.dcm4che3.net.service.DicomServiceException;
 
 import java.time.Duration;
@@ -15,11 +16,14 @@ import static java.util.function.Predicate.isEqual;
 
 public class OngoingCFindStub {
 
-    private final CFindStubBuilder builder;
+    public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelFind;
     private final CFindStubRegistry registry;
+    private final CFindStubBuilder<?, ?> builder;
 
     public OngoingCFindStub(Predicate<Attributes> keysPredicate, CFindStubRegistry registry) {
-        this.builder = CFindStub.builder().expectedKeys(keysPredicate);
+        this.builder = CFindStub.builder()
+                .affectedSOPClassUID(Predicate.isEqual(DEFAULT_SOPCLASS))
+                .expectedKeys(keysPredicate);
         this.registry = registry;
     }
 
@@ -38,7 +42,6 @@ public class OngoingCFindStub {
                 .stream()
                 .flatMap(Arrays::stream)
                 .collect(Collectors.toList());
-
         this.registry.register(builder.responses(responses).build());
     }
 

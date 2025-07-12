@@ -51,7 +51,8 @@ public class MockFindScp extends BasicCFindSCP {
         if (this.registry.isEmpty()) {
             throw new DicomServiceException(Status.UnableToProcess, "No ongoing stub");
         }
-        List<Attributes> datasets = this.registry.findResponses(rq, keys);
+        var stubOpt = this.registry.findStub(rq, keys);
+        List<Attributes> datasets = stubOpt.isEmpty() ? List.of() : stubOpt.get().apply();
         Iterator<Attributes> iterator = datasets.iterator();
 
         return new BasicQueryTask(as, pc, rq, keys) {
