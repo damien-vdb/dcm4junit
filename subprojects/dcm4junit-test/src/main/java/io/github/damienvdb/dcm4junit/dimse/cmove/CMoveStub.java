@@ -15,4 +15,8 @@ public class CMoveStub extends Stub<Path> {
     private final String hostname;
     @Getter
     private final int port;
+
+    public static abstract class CMoveStubBuilder<C extends CMoveStub, B extends CMoveStub.CMoveStubBuilder<C, B>>
+            extends Stub.StubBuilder<Path, C, B> {
+    }
 }

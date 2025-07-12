@@ -13,6 +13,10 @@ import java.util.function.Predicate;
 @SuperBuilder
 @AllArgsConstructor
 public class Stub<T> {
+
+    public static abstract class StubBuilder<T, C extends Stub<T>, B extends Stub.StubBuilder<T, C, B>> {
+    }
+
     protected final Predicate<String> affectedSOPClassUID;
     protected final Predicate<Attributes> expectedKeys;
     @Singular
