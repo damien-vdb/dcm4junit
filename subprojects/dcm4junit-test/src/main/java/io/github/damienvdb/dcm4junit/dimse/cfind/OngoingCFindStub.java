@@ -1,7 +1,9 @@
 package io.github.damienvdb.dcm4junit.dimse.cfind;
 
-import io.github.damienvdb.dcm4junit.dimse.cfind.Stub.StubBuilder;
+import io.github.damienvdb.dcm4junit.dimse.StubRegistry;
+import io.github.damienvdb.dcm4junit.dimse.cfind.CFindStub.CFindStubBuilder;
 import org.dcm4che3.data.Attributes;
+import org.dcm4che3.data.UID;
 import org.dcm4che3.net.service.DicomServiceException;
 
 import java.time.Duration;
@@ -15,11 +17,14 @@ import static java.util.function.Predicate.isEqual;
 
 public class OngoingCFindStub {
 
-    private final StubBuilder builder;
-    private final StubRegistry registry;
+    public static final String DEFAULT_SOPCLASS = UID.StudyRootQueryRetrieveInformationModelFind;
+    private final StubRegistry<CFindStub> registry;
+    private final CFindStubBuilder<?, ?> builder;
 
-    public OngoingCFindStub(Predicate<Attributes> keysPredicate, StubRegistry registry) {
-        this.builder = Stub.builder().expectedKeys(keysPredicate);
+    public OngoingCFindStub(Predicate<Attributes> keysPredicate, StubRegistry<CFindStub> registry) {
+        this.builder = CFindStub.builder()
+                .affectedSOPClassUID(Predicate.isEqual(DEFAULT_SOPCLASS))
+                .expectedKeys(keysPredicate);
         this.registry = registry;
     }
 
@@ -38,7 +43,6 @@ public class OngoingCFindStub {
                 .stream()
                 .flatMap(Arrays::stream)
                 .collect(Collectors.toList());
-
         this.registry.register(builder.responses(responses).build());
     }
 
