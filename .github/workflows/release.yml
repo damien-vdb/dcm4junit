@@ -33,10 +33,12 @@ jobs:
             exit 1
           fi
 
+      # Checkout with a key that can bypass some rulesets
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ssh-key: ${{ secrets.JRELEASER_DEPLOY_KEY }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
