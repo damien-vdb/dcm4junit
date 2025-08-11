@@ -4,7 +4,7 @@
 lombok = "1.18.38"
 junit = "5.13.4"
 dcm4che = "5.34.0"
-assertj = "3.27.3"
+assertj = "3.27.4"
 spring-boot = "3.5.4"
 
 [libraries]
