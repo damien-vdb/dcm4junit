@@ -35,7 +35,7 @@ jobs:
 
       # Checkout with a key that can bypass some rulesets
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ssh-key: ${{ secrets.JRELEASER_DEPLOY_KEY }}
