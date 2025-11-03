@@ -2,7 +2,7 @@
 
 # Dependencies
 lombok = "1.18.38"
-junit = "5.13.4"
+junit = "6.0.1"
 dcm4che = "5.34.1"
 assertj = "3.27.6"
 spring-boot = "3.5.7"
